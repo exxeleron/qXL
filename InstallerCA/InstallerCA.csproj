@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6BB0CF41-DF5F-41A1-A564-74CAAA0B96A3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InstallerCA</RootNamespace>
+    <AssemblyName>InstallerCA</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <WixCATargetsPath Condition=" '$(WixCATargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets</WixCATargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- The VersionMajor, VersionMinor, VersionBuild and VersionRevision parts defined -->
+  <PropertyGroup Condition="'$(VERSION_BUILD)' == ''">
+    <VersionMajor>0</VersionMajor>
+    <VersionMinor>0</VersionMinor>
+    <VersionRevision>0</VersionRevision>
+    <VersionBuild>0</VersionBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VERSION_BUILD)' != ''">
+    <VersionMajor>$(VERSION_MAJOR)</VersionMajor>
+    <VersionMinor>$(VERSION_MINOR)</VersionMinor>
+    <VersionRevision>$(VERSION_REVISION)</VersionRevision>
+    <VersionBuild>$(VERSION_BUILD)</VersionBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VERSION_TYPE)' == ''">
+    <VersionType/>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VERSION_TYPE)' != ''">
+    <VersionType>-$(VERSION_TYPE)</VersionType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Deployment.WindowsInstaller, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\ISWIX LLC\IsWiX\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClosePromptForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClosePromptForm.designer.cs">
+      <DependentUpon>ClosePromptForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomAction.cs" />
+    <Compile Include="PromptCloseApplication.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindowWrapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CustomAction.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- Import the msbuildtasks -->
+  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')" />
+  <!-- 
+       Execute the BeforeBuild step, creating the AssemblyVersionInfo.cs file containing the version numbers.
+       Both version and file version 
+  -->
+  <Target Name="BeforeBuild" Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')">
+    <Message Text="Version: $(VersionMajor).$(VersionMinor).$(VersionRevision).$(VersionBuild)" />
+    <Attrib Files="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs" Normal="true" />
+    <AssemblyInfo CodeLanguage="CS" OutputFile="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cs" AssemblyCompany="exxeleron GmbH" AssemblyTitle="qXL$(VersionType)" AssemblyProduct="qXL$(VersionType)" AssemblyCopyright="Copyright © exxeleron GmbH 2014" AssemblyVersion="$(VersionMajor).$(VersionMinor).$(VersionRevision).$(VersionBuild)" AssemblyFileVersion="$(VersionMajor).$(VersionMinor).$(VersionRevision).$(VersionBuild)" />
+  </Target>
+  <Import Project="$(WixCATargetsPath)" />
+</Project>

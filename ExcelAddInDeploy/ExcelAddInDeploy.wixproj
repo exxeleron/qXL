@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- The VersionMajor, VersionMinor, VersionBuild and VersionRevision parts defined -->
+  <PropertyGroup Condition="'$(VERSION_BUILD)' == ''">
+    <VersionMajor>0</VersionMajor>
+    <VersionMinor>0</VersionMinor>
+    <VersionRevision>0</VersionRevision>
+    <VersionBuild>0</VersionBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VERSION_BUILD)' != ''">
+    <VersionMajor>$(VERSION_MAJOR)</VersionMajor>
+    <VersionMinor>$(VERSION_MINOR)</VersionMinor>
+    <VersionRevision>$(VERSION_REVISION)</VersionRevision>
+    <VersionBuild>$(VERSION_BUILD)</VersionBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VERSION_TYPE)' == ''">
+    <VersionType/>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VERSION_TYPE)' != ''">
+    <VersionType>-$(VERSION_TYPE)</VersionType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.7</ProductVersion>
+    <ProjectGuid>{c21ad44a-4334-48c3-bc97-98077f8c7d53}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>qXL$(VersionType)-$(VersionMajor).$(VersionMinor).$(VersionRevision).$(VersionBuild)</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug;MSIProductVersion=$(MSIProductVersion);VersionMajor=$(VersionMajor);VersionMinor=$(VersionMinor);VersionRevision=$(VersionRevision);VersionBuild=$(VersionBuild);VersionType=$(VersionType)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <LinkerAdditionalOptions>
+    </LinkerAdditionalOptions>
+    <DefineConstants>MSIProductVersion=$(MSIProductVersion);VersionMajor=$(VersionMajor);VersionMinor=$(VersionMinor);VersionRevision=$(VersionRevision);VersionBuild=$(VersionBuild);VersionType=$(VersionType)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Banner.jpg" />
+    <Content Include="Resources\Dialog.jpg" />
+    <Content Include="Resources\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InstallerCA\InstallerCA.csproj">
+      <Name>InstallerCA</Name>
+      <Project>{6bb0cf41-df5f-41a1-a564-74caaa0b96a3}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\qXL\qXL.csproj">
+      <Name>qXL</Name>
+      <Project>{85a5829e-f619-416f-be96-001656474bad}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(WixTargetsPath)" />
+</Project>
