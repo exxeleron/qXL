@@ -22,7 +22,6 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 using ExcelDna.ComInterop;
@@ -363,7 +362,7 @@ namespace qXL
 
         #region ArrayResizer
 
-        public class ArrayResizer : XlCall
+        private class ArrayResizer : XlCall
         {
             // This function will run in the UDF context.
             // Needs extra protection to allow multithreaded use.
@@ -461,15 +460,13 @@ namespace qXL
 
                     // TODO: Find some dummy macro to clear the undo stack
 
-                    if (formulaArrayReturn != XlReturn.XlReturnSuccess)
-                    {
-                        var firstCellAddress = (string) Excel(xlfReftext, firstCell, true);
-                        Excel(xlcAlert,
-                            "Cannot resize array formula at " + firstCellAddress +
-                            " - result might overlap another array.");
-                        // Might have failed due to array in the way.
-                        firstCell.SetValue("'" + formula);
-                    }
+                    if (formulaArrayReturn == XlReturn.XlReturnSuccess) return;
+                    var firstCellAddress1 = (string) Excel(xlfReftext, firstCell, true);
+                    Excel(xlcAlert,
+                        "Cannot resize array formula at " + firstCellAddress1 +
+                        " - result might overlap another array.");
+                    // Might have failed due to array in the way.
+                    firstCell.SetValue("'" + formula);
                 }
             }
         }
@@ -477,62 +474,62 @@ namespace qXL
         // RIIA-style helpers to deal with Excel selections    
         // Don't use if you agree with Eric Lippert here: http://stackoverflow.com/a/1757344/44264
 
-        public class ExcelCalculationManualHelper : XlCall, IDisposable
+        private class ExcelCalculationManualHelper : XlCall, IDisposable
         {
-            private readonly object oldCalculationMode;
+            private readonly object _oldCalculationMode;
 
             public ExcelCalculationManualHelper()
             {
-                oldCalculationMode = Excel(xlfGetDocument, 14);
+                _oldCalculationMode = Excel(xlfGetDocument, 14);
                 Excel(xlcOptionsCalculation, 3);
             }
 
             public void Dispose()
             {
-                Excel(xlcOptionsCalculation, oldCalculationMode);
+                Excel(xlcOptionsCalculation, _oldCalculationMode);
             }
         }
 
-        public class ExcelEchoOffHelper : XlCall, IDisposable
+        private class ExcelEchoOffHelper : XlCall, IDisposable
         {
-            private readonly object oldEcho;
+            private readonly object _oldEcho;
 
             public ExcelEchoOffHelper()
             {
-                oldEcho = Excel(xlfGetWorkspace, 40);
+                _oldEcho = Excel(xlfGetWorkspace, 40);
                 Excel(xlcEcho, false);
             }
 
             public void Dispose()
             {
-                Excel(xlcEcho, oldEcho);
+                Excel(xlcEcho, _oldEcho);
             }
         }
 
         // Select an ExcelReference (perhaps on another sheet) allowing changes to be made there.
         // On clean-up, resets all the selections and the active sheet.
         // Should not be used if the work you are going to do will switch sheets, amke new sheets etc.
-        public class ExcelSelectionHelper : XlCall, IDisposable
+        private class ExcelSelectionHelper : XlCall, IDisposable
         {
-            private readonly object oldActiveCellOnActiveSheet;
+            private readonly object _oldActiveCellOnActiveSheet;
 
-            private readonly object oldActiveCellOnRefSheet;
-            private readonly object oldSelectionOnActiveSheet;
-            private readonly object oldSelectionOnRefSheet;
+            private readonly object _oldActiveCellOnRefSheet;
+            private readonly object _oldSelectionOnActiveSheet;
+            private readonly object _oldSelectionOnRefSheet;
 
             public ExcelSelectionHelper(ExcelReference refToSelect)
             {
                 // Remember old selection state on the active sheet
-                oldSelectionOnActiveSheet = Excel(xlfSelection);
-                oldActiveCellOnActiveSheet = Excel(xlfActiveCell);
+                _oldSelectionOnActiveSheet = Excel(xlfSelection);
+                _oldActiveCellOnActiveSheet = Excel(xlfActiveCell);
 
                 // Switch to the sheet we want to select
                 var refSheet = (string) Excel(xlSheetNm, refToSelect);
                 Excel(xlcWorkbookSelect, new object[] {refSheet});
 
                 // record selection and active cell on the sheet we want to select
-                oldSelectionOnRefSheet = Excel(xlfSelection);
-                oldActiveCellOnRefSheet = Excel(xlfActiveCell);
+                _oldSelectionOnRefSheet = Excel(xlfSelection);
+                _oldActiveCellOnRefSheet = Excel(xlfActiveCell);
 
                 // make the selection
                 Excel(xlcFormulaGoto, refToSelect);
@@ -541,14 +538,14 @@ namespace qXL
             public void Dispose()
             {
                 // Reset the selection on the target sheet
-                Excel(xlcSelect, oldSelectionOnRefSheet, oldActiveCellOnRefSheet);
+                Excel(xlcSelect, _oldSelectionOnRefSheet, _oldActiveCellOnRefSheet);
 
                 // Reset the sheet originally selected
-                var oldActiveSheet = (string) Excel(xlSheetNm, oldSelectionOnActiveSheet);
+                var oldActiveSheet = (string) Excel(xlSheetNm, _oldSelectionOnActiveSheet);
                 Excel(xlcWorkbookSelect, new object[] {oldActiveSheet});
 
                 // Reset the selection in the active sheet (some bugs make this change sometimes too)
-                Excel(xlcSelect, oldSelectionOnActiveSheet, oldActiveCellOnActiveSheet);
+                Excel(xlcSelect, _oldSelectionOnActiveSheet, _oldActiveCellOnActiveSheet);
             }
         }
 
