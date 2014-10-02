@@ -66,7 +66,7 @@ namespace InstallerCA
                                     // if there are already OPEN keys, determine if our key is installed
                                     if (szValueName.StartsWith("OPEN"))
                                     {
-                                        nOpenVersion = int.TryParse(szValueName.Substring(4), out nOpenVersion) ? nOpenVersion : 0;
+                                        nOpenVersion = int.TryParse(szValueName.Substring(4), NumberStyles.Any, CultureInfo.InvariantCulture, out nOpenVersion) ? nOpenVersion : 0;
                                         int nNewOpen = szValueName == "OPEN" ? 0 : nOpenVersion;
                                         if (nNewOpen > nMaxOpen)
                                         {
