@@ -43,7 +43,7 @@
     <VersionBuild>$(VERSION_BUILD)</VersionBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(VERSION_TYPE)' == ''">
-    <VersionType/>
+    <VersionType />
   </PropertyGroup>
   <PropertyGroup Condition="'$(VERSION_TYPE)' != ''">
     <VersionType>-$(VERSION_TYPE)</VersionType>
@@ -58,6 +58,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
