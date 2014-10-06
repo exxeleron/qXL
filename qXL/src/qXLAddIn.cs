@@ -184,6 +184,7 @@ namespace qXL
                 if (MemoryCache.Default.Contains(key))
                 {
                     r = MemoryCache.Default[key] as object[,];
+                    MemoryCache.Default.Remove(key);
                 }
                 else
                 {
@@ -193,7 +194,7 @@ namespace qXL
                     if (!(result is object[,])) return result;
 
                     r = result as object[,];
-                    MemoryCache.Default.Add(key, r, DateTimeOffset.Now.AddSeconds(15));
+                    MemoryCache.Default.Add(key, r, DateTimeOffset.Now.AddSeconds(30));
                 }
                 return ArrayResizer.Resize(r);
             }
