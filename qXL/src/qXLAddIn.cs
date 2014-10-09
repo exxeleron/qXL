@@ -184,7 +184,7 @@ namespace qXL
                 if (MemoryCache.Default.Contains(key))
                 {
                     r = MemoryCache.Default[key] as object[,];
-                    MemoryCache.Default.Remove(key);
+
                 }
                 else
                 {
@@ -196,7 +196,7 @@ namespace qXL
                     r = result as object[,];
                     MemoryCache.Default.Add(key, r, DateTimeOffset.Now.AddSeconds(30));
                 }
-                return ArrayResizer.Resize(r);
+                return ArrayResizer.Resize(r, key);
             }
             catch (IOException io)
             {
@@ -377,7 +377,7 @@ namespace qXL
         {
             // This function will run in the UDF context.
             // Needs extra protection to allow multithreaded use.
-            public static object Resize(object[,] array)
+            public static object Resize(object[,] array, String key)
             {
                 var caller = Excel(xlfCaller) as ExcelReference;
                 if (caller == null)
@@ -392,6 +392,7 @@ namespace qXL
                 if ((caller.RowLast - caller.RowFirst + 1 == rows) &&
                     (caller.ColumnLast - caller.ColumnFirst + 1 == columns))
                 {
+                    MemoryCache.Default.Remove(key);
                     // Size is already OK - just return result
                     return array;
                 }
@@ -414,13 +415,13 @@ namespace qXL
                     // Create a reference of the right size
                     var target = new ExcelReference(caller.RowFirst, rowLast, caller.ColumnFirst, columnLast,
                         caller.SheetId);
-                    DoResize(target); // Will trigger a recalc by writing formula
+                    DoResize(target, key); // Will trigger a recalc by writing formula
                 });
                 // Return what we have - to prevent flashing #N/A
                 return array;
             }
 
-            private static void DoResize(ExcelReference target)
+            private static void DoResize(ExcelReference target, String key)
             {
                 // Get the current state for reset later
                 using (new ExcelEchoOffHelper())
@@ -454,6 +455,7 @@ namespace qXL
                             ExcelMissing.Value, firstCell);
                         if (formulaR1C1Return != XlReturn.XlReturnSuccess || formulaR1C1Obj is ExcelError)
                         {
+                            MemoryCache.Default.Remove(key);
                             var firstCellAddress = (string)Excel(xlfReftext, firstCell, true);
                             Excel(xlcAlert,
                                 "Cannot resize array formula at " + firstCellAddress +
@@ -465,13 +467,19 @@ namespace qXL
                     }
                     // Must be R1C1-style references
                     object ignoredResult;
+                    var result = MemoryCache.Default[key] as object[,];
                     //Debug.Print("Resizing START: " + target.RowLast);
                     var formulaArrayReturn = TryExcel(xlcFormulaArray, out ignoredResult, formulaR1C1, target);
                     //Debug.Print("Resizing FINISH");
 
                     // TODO: Find some dummy macro to clear the undo stack
 
-                    if (formulaArrayReturn == XlReturn.XlReturnSuccess) return;
+                    if (formulaArrayReturn == XlReturn.XlReturnSuccess)
+                    {
+                        MemoryCache.Default.Add(key, result, DateTimeOffset.Now.AddSeconds(30));
+                        return;
+                    }
+                    MemoryCache.Default.Remove(key);
                     var firstCellAddress1 = (string)Excel(xlfReftext, firstCell, true);
                     Excel(xlcAlert,
                         "Cannot resize array formula at " + firstCellAddress1 +
