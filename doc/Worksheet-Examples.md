@@ -25,7 +25,7 @@ Before running examples it is assumed that q process is running on `localhost`, 
 In order to follow Excel examples, these need to be defined on q process:
 
 ```q
-q)/ execute on localhost, port 5001t
+q)/ execute on localhost, port 5001
 q)func:{[p1;p2] :p1*p2}
 q)ret:{[x]:x}
 q)dtTest:{[v;dt] :$[dt=type v;`ok;`nok]}
@@ -101,7 +101,12 @@ Important differences can be seen in steps `4` and `7`:
   - **with** `reEval` parameter - as in Step 4, evaluating cell `A2` forces re-evaluation in cell `A1` / `qOpen` 
   function; since kdb+ server on port `5001` is running again, connection is established
 
+`reEval` parameter can be very useful if there is need to establish connections or re-connect to many servers at once.
+Let's open two connections to kdb+ servers:
 
+![reEval](../doc/img/reEval2Connections.png)
+
+Any actions that refer to connections to kdb+ servers (steps 2,4,6) are evaluated using one cell `A2`.
 > :heavy_exclamation_mark: Note:
 
 > Internally, `qXL` will store connection details as per given alias only. Therefore, one needs to be careful not to 
@@ -300,6 +305,25 @@ providing more details:
 Here are all the examples used above for `qQuery` function:
 
 ![qQuery](../doc/img/qQuery.png)
+
+
+#### qQueryRange
+
+For all non-scalar results `qQuery` returns Excel Array Formula with the proper dimensions. Thanks to this, the result range in Excel will automatically adjust its size when we call `qQuery` again and the original `q` object was modified in the meantime (for example if any deletes or inserts have been done on the table). 
+
+```
+=qQueryRange(C1,"t1")
+```
+
+Returning Array Formula disallows however changing the output through the Excel. Any modification prompts the error as below
+
+![qArrayError](../doc/img/qArrayError.png)
+
+For that reason, the second function `qQueryRange` was introduced which works similarly as `qQuery` but prints the `q` output to the range instead of creating an Array Formula. 
+
+> Note
+> 
+> We suggest to use `qQueryRange` to query constantly growing tables, as each consecutive query will return the range which is least as big as the previous one. In other cases `qQuery` is preferable. 
 
 <!--------------------------------------------------------------------------------------------------------------------->
 ## Converting data types

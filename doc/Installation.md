@@ -38,7 +38,7 @@ Most recent `qXL` plugin for Excel can be downloaded from [here](../../../releas
 
   ![step_4](../doc/img/Inst_step_4.png)
   
-1. Select which `qXL` features (XLL AddIn, examples) shall be installed:
+1. Select which `qXL` features (XLL AddIn, examples) should be installed:
 
   ![step_5](../doc/img/Inst_step_5.png)
   

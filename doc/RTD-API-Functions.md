@@ -30,7 +30,7 @@ same Workbook object)
 - `password` [`String`] - password used to connect to q process
 
 Returns either:
-- alias bound with currently opened connection - in case opened successfully
+- alias associated with currently opened connection - in case opened successfully
 - description of error - in case connection could not be established
 
 The connection is opened only once. When using the same alias for all subsequent function calls, the same existing 
@@ -38,21 +38,21 @@ connection will be used.
 
 > Note: 
 
->To force re-opening of the connection use `qUnsubscribe` and `qSubscribe` again or use different alias.
+>To force re-opening of the connection use different alias.
 
 [**Examples**](RTD-Examples.md#opening-and-closing-connection)
 
 <!--------------------------------------------------------------------------------------------------------------------->
 ### qRtdClose
 
-Function used to correctly close the connection bound with given alias:
+Function used to correctly close the connection associated with given alias:
 
 ```
 String qRtdClose ( alias )
 ```
 
 where:
-- `alias` [`String`] - closes the connection bound with given alias
+- `alias` [`String`] - closes the connection associated with given alias
 
 Returns string `Closed` if connection closed successfully or error description in case of failure.
 
@@ -61,7 +61,7 @@ Returns string `Closed` if connection closed successfully or error description i
 <!--------------------------------------------------------------------------------------------------------------------->
 ### qRtdConfigure
 
-Function used to configure various aspects of RTD server behavior:
+Function used to configure various aspects of RTD server behaviour:
 
 ```
 Object qRtdConfigure ( paramName, paramValue )
@@ -95,8 +95,8 @@ otherwise will return `old` value of the parameter.
 
 ### RTD
 
-Function used to subscribe to certain value from within cell in workbook so that it gets automatically populated with 
-new values as soon as they’re available:
+Function used to subscribe to certain value from within a cell in workbook so that it automatically gets populated with 
+new values as soon as they are available:
 
 ```
 Object RTD ( progID, server, topic1, topic2, topic3, topic4, topic5, topic6)
@@ -115,12 +115,12 @@ where:
 
 > Note:
 
-> Since `Topic6` can be used only for back tick subscription, system cannot determinate where to put data for 
+> Since `Topic6` can be used only for back tick subscription, system cannot determine where to put data for 
 particular symbols. That is why `Topic6` has been introduced – it is used to map incoming symbols to numbers. 
 First symbol which is delivered from database is mapped with first empty number of `Topic6` and it stays mapped 
 until all `RTD` formulas with given value of `Topic6` are present in the sheet.
 
-Updates the content of cell to which this function call is bound with the value matching subscription criteria.
+Updates the content of cell to which this function call is linked with the value matching subscription criteria.
 
 
 [**Examples**](RTD-Examples.md#subscribe-single-symbol)

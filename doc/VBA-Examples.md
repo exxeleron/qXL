@@ -115,7 +115,7 @@ Set qXL   = addIn.Object
 msg = qXL.qOpen(connAlias, hostName, portNumber, userName, password)
 ```
 
-If connections was successful, string `Connected` will be shown in cell `G2`, otherwise an error message will appear:
+If connection was successful, string `Connected` will be shown in cell `G2`, otherwise an error message will appear:
 
 ```VBA
 If msg = connAlias Then
@@ -155,7 +155,7 @@ Sheets("qQuery").Range("C6:E6") = qXL.qQuery(connAlias, "10* 1 2 3")
 ```
 
 While scalar values only need to be mapped to one cell, arrays need to be mapped to the number of the array entries.
-In the last example above three cells will be used which will result in overwriting any previous content.
+In the last example above, three cells will be used which will result in overwriting any previous content.
 
 > :heavy_exclamation_mark: Note:
 
@@ -166,7 +166,7 @@ In the last example above three cells will be used which will result in overwrit
 
 ### Function call
 
-To call a function already defined on a q process:
+To call a function already defined in a q process:
 
 ```VBA
 Sheets("qQuery").Range("C8") = qXL.qQuery(connAlias, "func", 3, 10)
@@ -211,7 +211,7 @@ q)triple[40]
 > Sheets("qQuery").Range("C11") = qXL.qQuery(connAlias, "getMax", qXL.qList({11,55,10},"i"))
 > ```
 >
-> This is especially important for handling lists, dictionaries and tables which will be covered later in more detail.
+> This is especially important for handling lists, dictionaries and tables, which will be covered below in more detail.
 
 ### q-sql
 
@@ -262,7 +262,7 @@ Set resultQueryTable2Select2 = Sheets("qQuery").Range("C23:D25")
 resultQueryTable2Select2 = qXL.qQuery(connAlias, "select from t2 where colA=`c")
 ```
 
-If needed, content can be always inspected by 'tweaking' query, providing more details, for example:
+If needed, content can always be inspected by 'tweaking' query, providing more details, for example:
 
 ```VBA
 Dim resultQueryTable2Select3 As Range
@@ -310,7 +310,7 @@ Sheets("qAtom").Range("C7") = qXL.qQuery(connAlias, "dtTest", qXL.qAtom(255, "e"
 > :white_check_mark: Hint:
 
 > Please visit [code.kx.com](http://code.kx.com/wiki/Reference/Datatypes) for details about available q data types. 
-[Type mapping](Type-Mapping.md) lists strings used for conversions, those also apply to `qList`, `qDict` and `qTable` 
+[Type mapping](Type-Mapping.md) lists strings used for conversions, also apply to `qList`, `qDict` and `qTable` 
 functions described below.
 
 <!--------------------------------------------------------------------------------------------------------------------->
@@ -318,7 +318,7 @@ functions described below.
 
 > :heavy_exclamation_mark: Note:
 
-> `qList` can only operate using Excel ranges. Using values directly in this functions can result in unexpected 
+> `qList` can only operate using Excel ranges. Using values directly in this function can result in unexpected 
 > behaviour!
 
 `qList` performs conversion of Excel values to lists as understood by q. In general, if one-dimensional range is given,
@@ -486,7 +486,7 @@ There are two small differences when comparing `qTable` to `qDict`:
 1. `arrayTableColumnNames` - first parameter describes column names (vs. keys in `qDict`)
 2. `arrayTableKey` - last parameter specifies key(s) for the table, in the above case column `Symbol` was used as a key
 
-These difference can be seen clearly when comparing function definition for `qDict` and `qTable`:
+This difference can be seen clearly when comparing function definition for `qDict` and `qTable`:
 
 ```
 Object qXL.qDict  ( keys,        values, types )
