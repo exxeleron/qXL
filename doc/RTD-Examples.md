@@ -19,7 +19,8 @@
 
 #### Q process
 
-Before running examples it is assumed that system built based on [Lesson04](../../../../enterprise-components/edit/master/tutorial/Lesson04) is running on the local server. 
+Before running examples it is assumed that `Exxeleron` system from [Lesson04](../../../../enterprise-components/edit/master/tutorial/Lesson04) 
+ is installed [Lesson04](../../../../enterprise-components/edit/master/tutorial/Lesson04) on the local server. 
 
 
 #### Excel list separators
@@ -44,7 +45,7 @@ for more details.
 <!--------------------------------------------------------------------------------------------------------------------->
 ## Opening and closing connection
 
-To open a RTD connection to q process, necessary parameters need to be given to `qRtdOpen` function:
+To open a RTD connection to q process, necessary parameters need to be passed to `qRtdOpen` function:
 
 ```
 =qRtdOpen("testRTDConnection","localhost",17010)
@@ -52,7 +53,7 @@ To open a RTD connection to q process, necessary parameters need to be given to 
 
 > Note:
 
-> Typically on production environment one would need to also pass username and password as parameters:
+> Typically, on production environment one would need to also pass username and password as parameters:
 > ```
 > =qRtdOpen("testRTDConnection","localhost",17010,"username","password")
 > ```
@@ -63,7 +64,7 @@ Otherwise, error message will appear:
 ![qOpen](../doc/img/qRTDOpen.png)
 
 
-Closing connection can be done by using the same alias as given in the `qRtdOpen` function:
+To close the connection again, use the same alias as given in the `qRtdOpen` function:
 
 ```
 =qRtdClose("testRTDConnection")
@@ -73,7 +74,7 @@ If connection is terminated, the `Disconnected from 'testRTDConnection'` message
 
 ![qClose](../doc/img/qRTDClose.png)
 
-Summary below shows all function calls which can be used to open and close connection between `qXL` and kdb+ server:
+Summary below shows all function calls, which can be used to open and close connections between `qXL` and kdb+ server:
 
 ![OpenCloseSummary](../doc/img/qRTDOpen_qRTDClose_summary.png)
 
@@ -85,11 +86,11 @@ Various aspects of RTD server configuration can be defined using `qRtdConfigure`
 =qRtdConfigure(paramName, paramValue)
 ```
 
-This function does not require `alias` as an argument since it is valid for all open subscriptions. It returns value of the parameter in question. If the parameter (given in the `paramName`) has been set correctly, its value will equal to `ParamValue`, otherwise `old` value of the parameter will be returned.
+This function does not require `alias` as an argument since it is valid for all open subscriptions. It returns the value of the parameter in question. If the parameter (given in the `paramName`) has been set correctly, its value will equal `ParamValue`, otherwise the `old` value of the parameter will be returned.
 
 The list of all possible parameters and their values is available in [RTD API documentation](../doc/RTD-API-Functions.md#qrtdconfigure)
 
-The most common example is setting history length, .i.e. the number of available published values starting from the latest one. 
+The most common example is setting history length, i.e. the number of available published values starting from the latest one. 
 
 ```
 =qRtdConfigure("data.history.length",60)
@@ -128,7 +129,7 @@ Please compare these two calls subscribing single and all instruments:
 =RTD("qxlrtd",,"testRTDConnection","quote","`",     "bid","", 1)    / all instruments
 ```
 
-As per [RTD](RTD-API-Functions.md#rtd) documentation, the last two parameters in second call are:
+According to [RTD](RTD-API-Functions.md#rtd) documentation, the last two parameters in second call are:
 
 > - `topic5` [`String`] - history index; optional - only needed when `Topic3` equals back tick symbol (\`); when filling 
 `Topic6` we have to have `Topic5` (can be empty)
@@ -148,22 +149,22 @@ Then for the screenshot below:
 
 ![RTD Wildcard](../doc/img/wildcard.png)
 
-following processing will take place:
+the following processing will take place:
 
-1. Initially none of the mapping identifiers defined in column A are used 
+1. Initially, none of the mapping identifiers defined in column A are used 
 2. First published symbol `GOOG` will be associated with first mapping identifier specified in cell `A2`, symbol and bid price will be displayed in cells `B2` and `C2` respectively
 3. Next published symbol from kdb+ is `MSFT` - since the first mapping identifier is already used for `GOOG`, the next available identifier will be used instead (defined in cell `A3`), symbol and bid price will be displayed in cells `B3` and `C3` respectively
 4. Another update will be also for `MSFT`, since this symbol is associated with mapping identifier `2`, only the bid price will be updated in cell `C3`
 5. Next published symbol - `YHOO` - will not be shown in Excel since only two mappings were created and both are already used
 6. Last update for `MSFT` will cause changes in cell `C3` for bid price
 
-To sum it up:
+Summary:
 - In Excel, if one would like to use all subscribed symbols, the mapping identifier has to be specified for each available symbol
 - List of subscribed instruments in Excel can be extended at any time by providing additional mapping identifiers, these mappings will be associated with published instruments without current identifiers
 - Symbols initially associated to mapping identifiers are based on the order of incoming updates
 - If published symbol is already associated with mapping identifier, existing values are updated
 - If published symbol is not associated with mapping identifier, either:
-  - new mapping identifier is allocated to this symbol if mapping identifiers are still available
+  - new mapping identifier is allocated to this symbol if mapping identifiers are still available or
   - update is disregarded if no further mapping identifiers are defined in Excel
 
 ## Opening and closing the workbook

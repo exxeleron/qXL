@@ -25,7 +25,7 @@ String qOpen ( alias, hostname, port, username, password, reEval )
 ```
 
 where:
-- `alias` [`String`] - alias name that should be assigned to the connection currently being opened; this alias can later 
+- `alias` [`String`] - alias name that should be assigned to the connection currently opened; this alias can later 
 be used by other functions to reference specific connections (as multiple connections can be opened from the same 
 `Workbook` object)
 - `hostname` [`String`] - name or IP address of the host to which connection should be opened
@@ -62,14 +62,14 @@ Returns:
 <!--------------------------------------------------------------------------------------------------------------------->
 ### qClose
 
-Function used to correctly close the connection bound with given alias:
+Function used to correctly close the connection with given alias:
 
 ```
 String qClose ( alias )
 ```
 
 where:
-- `alias` [`String`] - closes the connection bound with given alias
+- `alias` [`String`] - closes the connection with given alias
 
 Returns:
 - string `Closed` if connection is closed successfully 
@@ -81,7 +81,7 @@ Returns:
 <!--------------------------------------------------------------------------------------------------------------------->
 ### qQuery
 
-Function used to query data or call a kdb+ function using the connection bound with given alias:
+Function used to query data or call a kdb+ function using the connection with given alias:
 
 ```
 Object qQuery ( alias, query, p1, p2, p3, p4, p5, p6, p7, p8 )
