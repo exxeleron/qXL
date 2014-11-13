@@ -184,7 +184,6 @@ namespace qXL
                 if (MemoryCache.Default.Contains(key))
                 {
                     r = MemoryCache.Default[key] as object[,];
-
                 }
                 else
                 {
@@ -196,7 +195,66 @@ namespace qXL
                     r = result as object[,];
                     MemoryCache.Default.Add(key, r, DateTimeOffset.Now.AddSeconds(30));
                 }
-                return ArrayResizer.Resize(r, key);
+                return ArrayResizer.ResizeCached(r, key);
+            }
+            catch (IOException io)
+            {
+                //this normally means that the process has been terminated on the receiving site
+                // so clear the connection alias.
+                return "ERR: " + io.Message;
+            }
+            catch (Exception e)
+            {
+                return "ERR: " + e.Message;
+            }
+        }
+
+        //-------------------------------------------------------------------//
+        /// <summary>
+        ///     Alternative function for sending queries to q process.
+        /// </summary>
+        /// <param name="alias"> alias of the connection, this value can be received by calling Open</param>
+        /// <param name="query">name of the function to be called or string to be evaluated within q process </param>
+        /// <param name="p1">(optional) first parameter to the function call</param>
+        /// <param name="p2">(optional) second parameter to the function call</param>
+        /// <param name="p3">(optional) third parameter to the function call</param>
+        /// <param name="p4">(optional) fourth parameter to the function call</param>
+        /// <param name="p5">(optional) fifth parameter to the function call</param>
+        /// <param name="p6">(optional) sixth parameter to the function call</param>
+        /// <param name="p7">(optional) seventh parameter to the function call</param>
+        /// <param name="p8">(optional) eighth parameter to the function call</param>
+        /// <returns></returns>
+        [ExcelFunction(Description = "Function for sending queries to kdb+.", Category = "qXL",
+            Name = "qQueryRange")]
+        // ReSharper disable UnusedMember.Global
+        public static object QueryRange(
+            // ReSharper restore UnusedMember.Global
+            [ExcelArgument("Alias of the connection, this value can be received by calling Open.")] string alias,
+            [ExcelArgument("Name of the function to be called or string to be evaluated within q process.")] object
+                query,
+            [ExcelArgument("First parameter to the function call (optional).")] object p1 = null,
+            [ExcelArgument("Second parameter to the function call (optional).")] object p2 = null,
+            [ExcelArgument("Third parameter to the function call (optional).")] object p3 = null,
+            [ExcelArgument("Fourth parameter to the function call (optional).")] object p4 = null,
+            [ExcelArgument("Fifth parameter to the function call (optional).")] object p5 = null,
+            [ExcelArgument("Sixth parameter to the function call (optional).")] object p6 = null,
+            [ExcelArgument("Seventh parameter to the function call (optional).")] object p7 = null,
+            [ExcelArgument("Eighth parameter to the function call (optional).")] object p8 = null)
+        {
+            if (ExcelDnaUtil.IsInFunctionWizard())
+            {
+                return ExcelEmpty.Value;
+            }
+
+            try
+            {
+                var result = _qXL.qQuery(alias, query, p1, p2, p3, p4, p5, p6, p7, p8);
+                if (result == null) return query; //null gets returned only when function definition has been sent to q.
+                if (result is object[,])
+                {
+                    return ArrayResizer.Resize(result as object[,]);
+                }
+                return result;
             }
             catch (IOException io)
             {
@@ -375,9 +433,77 @@ namespace qXL
 
         private class ArrayResizer : XlCall
         {
+
             // This function will run in the UDF context.
             // Needs extra protection to allow multithreaded use.
-            public static object Resize(object[,] array, String key)
+            public static object Resize(object[,] array)
+            {
+                var caller = Excel(xlfCaller) as ExcelReference;
+                if (caller == null)
+                    return array;
+
+                var rows = array.GetLength(0);
+                var columns = array.GetLength(1);
+
+                if (rows == 0 || columns == 0)
+                    return array;
+
+                if ((caller.RowLast - caller.RowFirst + 1 == rows) &&
+                    (caller.ColumnLast - caller.ColumnFirst + 1 == columns))
+                {
+                    // Size is already OK - just return result
+                    return array;
+                }
+
+                var rowLast = caller.RowFirst + rows - 1;
+                var columnLast = caller.ColumnFirst + columns - 1;
+
+                // Check for the sheet limits
+                if (rowLast > ExcelDnaUtil.ExcelLimits.MaxRows - 1 ||
+                    columnLast > ExcelDnaUtil.ExcelLimits.MaxColumns - 1)
+                {
+                    // Can't resize - goes beyond the end of the sheet - just return #VALUE
+                    // (Can't give message here, or change cells)
+                    return ExcelError.ExcelErrorValue;
+                }
+
+                // TODO: Add some kind of guard for ever-changing result?
+                if (columns > 1)
+                {
+                    ExcelAsyncUtil.QueueAsMacro(() =>
+                    {
+                        var target = new ExcelReference(caller.RowFirst, caller.RowFirst, caller.ColumnFirst + 1, columnLast);
+                        object[] firstRow = new object[columns - 1];
+                        for (int i = 1; i < columns; i++)
+                        {
+                            firstRow[i - 1] = array[0, i];
+                        }
+                        target.SetValue(firstRow);
+                    });
+                }
+                if (rows > 1)
+                {
+                    ExcelAsyncUtil.QueueAsMacro(() =>
+                    {
+                        var target = new ExcelReference(caller.RowFirst + 1, rowLast, caller.ColumnFirst, columnLast);
+                        object[,] data = new object[rows - 1, columns];
+                        for (int i = 1; i < rows; i++)
+                        {
+                            for (int j = 0; j < columns; j++)
+                            {
+                                data[i - 1, j] = array[i, j];
+                            }
+                        }
+                        target.SetValue(data);
+                    });
+                }
+                // Return what we have - to prevent flashing #N/A
+                return array;
+            }
+
+            // This function will run in the UDF context.
+            // Needs extra protection to allow multithreaded use.
+            public static object ResizeCached(object[,] array, String key)
             {
                 var caller = Excel(xlfCaller) as ExcelReference;
                 if (caller == null)
