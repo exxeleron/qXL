@@ -14,6 +14,11 @@
 // limitations under the License.
 // 
 
+//
+// Based on Excel-DNA by Govert van Drimmelen
+// https://exceldna.codeplex.com/
+//
+
 #region
 
 using System;
