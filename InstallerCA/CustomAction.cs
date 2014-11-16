@@ -74,7 +74,7 @@ namespace InstallerCA
                                         }
 
                                         // if the key is our key, set the open flag
-                                        //NOTE: this line means if the user has changed its office from 32 to 64 (or conversly) without removing the addin then we will not update the key properly
+										//NOTE: this line means if the user has changed its office from 32 to 64 (or conversly) without removing the addin then we will not update the key properly
                                         //The user will have to uninstall addin before installing it again
                                         if (rkExcelXll.GetValue(szValueName).ToString().Contains(szXllToRegister))
                                         {
@@ -241,8 +241,8 @@ namespace InstallerCA
             if (nVersion >= 14)
             {
                 // determine if office is 32-bit or 64-bit
-                RegistryKey localMachineRegistry = // 64bit machines need to determine correct hive.
-                    RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, 
+            	RegistryKey localMachineRegistry = // 64bit machines need to determine correct hive.
+            		RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, 
                         Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
                 RegistryKey rkBitness = localMachineRegistry.OpenSubKey(@"Software\Microsoft\Office\" + szOfficeVersionKey + @"\Outlook", false);
                 if (rkBitness != null)
