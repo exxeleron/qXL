@@ -100,7 +100,7 @@ namespace qXL
 
         // ReSharper disable InconsistentNaming
         public object qClose(string alias)
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
             try
             {
@@ -132,7 +132,7 @@ namespace qXL
 
         // ReSharper disable InconsistentNaming
         public object qQuery(string alias, object query,
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
             object p1 = null, object p2 = null, object p3 = null, object p4 = null,
             object p5 = null, object p6 = null, object p7 = null, object p8 = null)
         {
@@ -166,15 +166,13 @@ namespace qXL
                 {
                     return null; //null gets returned only when function definition has been sent to q.
                 }
-                //msg = query.ToString();
                 var array = qXL.Conversions.Convert2Excel(result);
                 return array ?? result;
-                //msg = "Null";
             }
             catch (IOException io)
             {
                 //this normally means that the process has been terminated on the receiving site
-                // so clear the connection alias.
+                //so clear the connection alias.
                 //Connections.Remove(alias);
                 return "ERR: " + io.Message;
             }
@@ -464,9 +462,10 @@ namespace qXL
 
         // ReSharper disable InconsistentNaming
         public string qXLAbout()
-        // ReSharper restore InconsistentNaming
+            // ReSharper restore InconsistentNaming
         {
-            object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
+            var attributes = Assembly.GetExecutingAssembly()
+                .GetCustomAttributes(typeof (AssemblyProductAttribute), false);
 
             AssemblyProductAttribute attribute = null;
             if (attributes.Length > 0)
@@ -474,7 +473,8 @@ namespace qXL
                 attribute = attributes[0] as AssemblyProductAttribute;
             }
 
-            return (attribute == null ? Assembly.GetExecutingAssembly().GetName().Name : attribute.Product) + " " + Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            return (attribute == null ? Assembly.GetExecutingAssembly().GetName().Name : attribute.Product) + " " +
+                   Assembly.GetExecutingAssembly().GetName().Version;
         }
 
         //------------------------------------------------------------------//
