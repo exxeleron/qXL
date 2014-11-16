@@ -14,11 +14,6 @@
 // limitations under the License.
 // 
 
-//
-// Based on Excel-DNA by Govert van Drimmelen
-// https://exceldna.codeplex.com/
-//
-
 #region
 
 using System;
@@ -404,7 +399,9 @@ namespace qXL
                             UpdateCache(alias, tab, data);
                         }
                     }
+// ReSharper disable EmptyGeneralCatchClause
                     catch (Exception)
+// ReSharper restore EmptyGeneralCatchClause
                     {
                         // Console.WriteLine(e.Message);
                     }
@@ -505,7 +502,9 @@ namespace qXL
         /// <param name="sym">symbol</param>
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMethodReturnValue.Local
         private static object RtdSubscribe(string alias,
+// ReSharper restore UnusedMethodReturnValue.Local
 // ReSharper restore MemberCanBePrivate.Global
             string tab,
             string sym)
@@ -526,7 +525,9 @@ namespace qXL
         /// <param name="alias">connection alias</param>
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMethodReturnValue.Local
         private static object RtdUnsubscribe(string alias)
+// ReSharper restore UnusedMethodReturnValue.Local
 // ReSharper restore MemberCanBePrivate.Global
         {
             var c = GetConnection(alias);
@@ -541,7 +542,9 @@ namespace qXL
         /// <param name="alias">connection alias</param>
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMethodReturnValue.Local
         private static object RtdSubscribeAllTables(string alias)
+// ReSharper restore UnusedMethodReturnValue.Local
 // ReSharper restore MemberCanBePrivate.Global
         {
             var c = GetConnection(alias);
@@ -570,7 +573,9 @@ namespace qXL
         /// <param name="alias">connection alias</param>
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMethodReturnValue.Local
         private static object RtdSubscribeAll(string alias)
+// ReSharper restore UnusedMethodReturnValue.Local
 // ReSharper restore MemberCanBePrivate.Global
         {
             var c = GetConnection(alias);
@@ -601,7 +606,9 @@ namespace qXL
         /// <param name="tableName">table name</param>
         // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable once UnusedMethodReturnValue.Global
+// ReSharper disable UnusedMethodReturnValue.Local
         private static object RtdSubscribeTable(string alias, string tableName)
+// ReSharper restore UnusedMethodReturnValue.Local
             // ReSharper restore MemberCanBePrivate.Global
         {
             var c = GetConnection(alias);

@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Runtime.Serialization;
 using ExcelDna.Integration;
 using qSharp;
 using interop = System.Runtime.InteropServices;
@@ -110,15 +109,7 @@ namespace qXL
                 }                   
             }
 
-            object[,] result;
-            if (hasNestedArray)
-            {
-                result = new object[rowsLength > 0 ? rowsLength : 1, columnsLength > 0 ? columnsLength : 1];
-            }
-            else
-            {
-                result = new object[1, rowsLength];
-            }
+            var result = hasNestedArray ? new object[rowsLength > 0 ? rowsLength : 1, columnsLength > 0 ? columnsLength : 1] : new object[1, rowsLength];
             var rowIdx = 0;
             var colIdx = 0;
             for (var i = inArray.GetLowerBound(0); i <= inArray.GetUpperBound(0); i++)

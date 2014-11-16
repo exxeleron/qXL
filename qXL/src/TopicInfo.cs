@@ -38,7 +38,9 @@ namespace qXL
 
         public string Symbol { get; private set; }
 
-        public string Alias { get; private set; }
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+        private string Alias { get; set; }
+// ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public string Table { get; private set; }
 

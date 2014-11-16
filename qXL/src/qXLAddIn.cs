@@ -431,7 +431,9 @@ namespace qXL
 
         #region ArrayResizer
 
+// ReSharper disable ClassNeverInstantiated.Local
         private class ArrayResizer : XlCall
+// ReSharper restore ClassNeverInstantiated.Local
         {
 
             // This function will run in the UDF context.
@@ -473,8 +475,8 @@ namespace qXL
                     ExcelAsyncUtil.QueueAsMacro(() =>
                     {
                         var target = new ExcelReference(caller.RowFirst, caller.RowFirst, caller.ColumnFirst + 1, columnLast);
-                        object[] firstRow = new object[columns - 1];
-                        for (int i = 1; i < columns; i++)
+                        var firstRow = new object[columns - 1];
+                        for (var i = 1; i < columns; i++)
                         {
                             firstRow[i - 1] = array[0, i];
                         }
@@ -486,10 +488,10 @@ namespace qXL
                     ExcelAsyncUtil.QueueAsMacro(() =>
                     {
                         var target = new ExcelReference(caller.RowFirst + 1, rowLast, caller.ColumnFirst, columnLast);
-                        object[,] data = new object[rows - 1, columns];
-                        for (int i = 1; i < rows; i++)
+                        var data = new object[rows - 1, columns];
+                        for (var i = 1; i < rows; i++)
                         {
-                            for (int j = 0; j < columns; j++)
+                            for (var j = 0; j < columns; j++)
                             {
                                 data[i - 1, j] = array[i, j];
                             }
@@ -602,7 +604,7 @@ namespace qXL
 
                     if (formulaArrayReturn == XlReturn.XlReturnSuccess)
                     {
-                        MemoryCache.Default.Add(key, result, DateTimeOffset.Now.AddSeconds(30));
+                        if (result != null) MemoryCache.Default.Add(key, result, DateTimeOffset.Now.AddSeconds(30));
                         return;
                     }
                     MemoryCache.Default.Remove(key);
