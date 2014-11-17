@@ -106,9 +106,11 @@ namespace qXL
             {
                 if (Connections.ContainsKey(alias))
                 {
-                    Connections[alias].Close();
                     QConnection con;
-                    Connections.TryRemove(alias, out con);
+                    if (Connections.TryRemove(alias, out con))
+                    {
+                        con.Close();
+                    }
                     return "Closed";
                 }
             }
@@ -479,8 +481,8 @@ namespace qXL
 
         //------------------------------------------------------------------//
         /// <summary>
-        ///     Generates random int in range (10000,99999) that will be used as a uniqe
-        ///     key for signing the converted data structures
+        ///     Generates new GUID which will be used as a uniqe
+        ///     key for signing the converted data structures.
         /// </summary>
         /// <returns>random string </returns>
         private static string GenerateRandomString()
