@@ -10,7 +10,7 @@ or open a [ticket](https://github.com/exxeleron/enterprise-components/issues)
 in case you enocounter any installation/startup problem which is not covered in this document.
 
 
-#### Issue 1 - memory leak while using charts based on RTD data
+### Issue 1 - memory leak while using charts based on RTD data
 
 ##### Problem
 It was observed that memory usage is constanly growing for Excel Workbooks which contain charts built dynamically based on the data from `RTD` formula. The increase in memory usage depends on the charts types and amount of data they require. 
@@ -27,7 +27,15 @@ In case of calling `qRTDClose` function the subscription is properly closed and 
 ##### Solution
 Calling `qRTDOpen` with different alias refreshes the connection and results in subscribing for new values. 
 
-### Issue 3 - different display of `qQueryRange` and `qQuery` nested results. 
+### Issue 3 - stop of the display in the Excel after publishing process is stopped
+
+##### Problem
+In case of stopping the publishing `q` process to which Excel is subscribed the `RTD` formula values stop updating. Even after restrting the process the subscription is not automatically re-opened, values are not updating. 
+
+##### Solution
+Calling `qRTDOpen` with different alias refreshes the connection and results in subscribing for new values. 
+
+### Issue 4 - different display of `qQueryRange` and `qQuery` nested results. 
 
 #####Problem
 Nested results (with more than two dimensions) are displayed differently in Excel in `qQuery` and `qQueryResult` formulas.
