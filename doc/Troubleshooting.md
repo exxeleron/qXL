@@ -13,16 +13,16 @@ in case you enocounter any installation/startup problem which is not covered in 
 #### Issue 1 - memory leak while using charts based on RTD data
 
 ##### Problem
-It was observed that memory usage is constanly growing for Excel Workbooks which contain charts built dynamically based on the data from `RTD` formula. The increase of memory usage depends on the charts types and amount of data require. 
+It was observed that memory usage is constanly growing for Excel Workbooks which contain charts built dynamically based on the data from `RTD` formula. The increase in memory usage depends on the charts types and amount of data they require. 
 The issue is caused by the memory leak for Excel charts with external data source. 
 
 ##### Solution
-The only possible solution is to close and open again the Workbook to free the memory. 
+Using charts with `RTD` data is generally not recommended. Open again the Workbook to free the memory.
 
 ### Issue 2 - no data updates after calling `qRTDClose` and `qRTDOpen`. 
 
 ##### Problem
-In case of calling `qRTDClose` function the subscription is properly closed and the `RTD` formuls is not updating. However, calling `qRTDOpen` with the same alias again does not result in subsribing for new values. 
+In case of calling `qRTDClose` function the subscription is properly closed and the `RTD` formuls stops updating. However, calling `qRTDOpen` with the same alias again does not result in subsribing for new values. 
 
 ##### Solution
 Calling `qRTDOpen` with different alias refreshes the connection and results in subscribing for new values. 
@@ -43,7 +43,7 @@ We query nested list which have atoms on all position except for the first eleme
 ![qQueryNested](../doc/img/qQueryNested.png)
 
 
-`qQueryRange` displays nested result as empty cell as can can seen below:
+`qQueryRange` displays nested result as empty cell as can be seen below:
 
 
 ![qQueryRangeNested](../doc/img/qQueryRangeNested.png)
