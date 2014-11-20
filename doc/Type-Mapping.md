@@ -31,4 +31,4 @@ Following table should be used as a guide for:
 
 \* Due to the type `LongLong` being exclusive to 64-bit Excel platforms, in `qXL` for 32-bit Excel the long type is returned as `Double`.
 
-Null types are being returned as an empty string.
+Null types are returned as an empty string.

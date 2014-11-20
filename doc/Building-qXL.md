@@ -31,7 +31,7 @@ To fully rebuild the solution and create the installer, execute:
 msbuild qXL.sln /t:Rebuild /p:Configuration=Release
 ```
 
-The installer is being built to the `ExcelAddInDeploy\bin\Release` folder.
+The installer is then built to the `ExcelAddInDeploy\bin\Release` folder.
 
 > Note:
 > 
@@ -47,7 +47,7 @@ The version number in AssemblyInfo and installer is generated upon build based o
     
 Version number follows the pattern `VERSION_MAJOR.VERSION_MINOR.VERSION_REVISION.VERSION_BUILD`, where each version element is represented as 16 bit integer. 
 
-In addition the `qXL` name can be post-fixed if the `VERSION_TYPE`. This can be used to create `BETA`, `RC` flavours of build.
+In addition the `qXL` name can be post-fixed if the `VERSION_TYPE`. This can be used to create `BETA` and `RC` flavours of build.
 
 
 ## Troubleshooting
