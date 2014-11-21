@@ -7,13 +7,13 @@
   
 > Please use our [google group](https://groups.google.com/d/forum/exxeleron) 
 or open a [ticket](https://github.com/exxeleron/enterprise-components/issues) 
-in case you enocounter any installation/startup problem which is not covered in this document.
+in case you encounter any installation/startup problem which is not covered in this document.
 
 
 ### Issue 1 - memory leak while using charts based on RTD data
 
 ##### Problem
-It was observed that memory usage is constanly growing for Excel Workbooks which contain charts built dynamically based on the data from `RTD` formula. The increase in memory usage depends on the charts types and amount of data they require. 
+It was observed that memory usage is constantly growing for Excel Workbooks which contain charts built dynamically based on the data from `RTD` formula. The increase in memory usage depends on the charts types and amount of data they require. 
 The issue is caused by the memory leak for Excel charts with external data source. 
 
 ##### Solution
@@ -22,7 +22,7 @@ Using charts with `RTD` data is generally not recommended. Open again the Workbo
 ### Issue 2 - no data updates after calling `qRTDClose` and `qRTDOpen`. 
 
 ##### Problem
-In case of calling `qRTDClose` function the subscription is properly closed and the `RTD` formuls stops updating. However, calling `qRTDOpen` with the same alias again does not result in subsribing for new values. 
+In case of calling `qRTDClose` function the subscription is properly closed and the `RTD` formulas stop updating. However, calling `qRTDOpen` with the same alias again does not result in subscribing for new values. 
 
 ##### Solution
 Calling `qRTDOpen` with different alias refreshes the connection and results in subscribing for new values. 
