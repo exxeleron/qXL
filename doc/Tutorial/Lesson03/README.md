@@ -26,7 +26,7 @@ systems. All parts of code which need amending will be explicitly mentioned.
 <!--------------------------------------------------------------------------------------------------------------------->
 ## Global variables
 
-As all VBA functions are properties of qXL add-in object it is useful to declare it as a global variable. Similarly with the connecton alias(es). In the example Workbook these two variables are initialized in the initialization sub:
+As all VBA functions are properties of qXL add-in object it is useful to declare it as a global variable. Similarly with the connection alias(es). In the example Workbook these two variables are initialized in the initialization sub:
 
 ```VBA
 
@@ -99,7 +99,7 @@ When repeatedly querying data to the same Worksheet it is very convenient to use
 
 Subroutine `kdbQueryToTable` creates Excel Table with given name using the range returned by `rngKdbQueryToRange`. If a table with the same name already exists, it is deleted.  
 
-Applying the `kdbQueryToTable` function we are able to create customize queries in one line and display results in specified Excel range. In the Workbook [Lesson3](../Lesson03/Lesson03.xlsm) we created two example subroutines, which cover the same functonalities as in [Lesson1](../Lesson01/Lesson01.xlsx). 
+Applying the `kdbQueryToTable` function we are able to create customize queries in one line and display results in specified Excel range. In the Workbook [Lesson3](../Lesson03/Lesson03.xlsm) we created two example subroutines, which cover the same functionalities as in [Lesson1](../Lesson01/Lesson01.xlsx). 
 
 - first which gets the result of q-sql query
 - second which gets OHLC function result with input paramateres from Excel
