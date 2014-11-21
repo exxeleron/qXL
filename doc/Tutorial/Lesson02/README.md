@@ -24,7 +24,7 @@ systems. All parts of code which need amending will be explicitly mentioned.
 To open a connection the `qRTDOpen` formula needs to be called. It is described in details
  [here](../../doc/RTD-API-Functions.md.md#qRTDOpen).
 
-We suggest to have a seperate sheet in each project which handles all connections. It is more convenient to use Named Ranges 
+We suggest to have a separate sheet in each project which handles all connections. It is more convenient to use Named Ranges 
 for referring to connection details in `qRTDOpen` ' function, as can be seen on the screen below. 
 
 ![qRTDOpen](../Lesson02/img/qRTDOpen.png)
@@ -36,7 +36,7 @@ for referring to connection details in `qRTDOpen` ' function, as can be seen on 
 We also added check cell, which shows whether the connection is open (cell "G2"). The formula inside is simply 
 `=A2=B2`, as properly opened connection returns the alias name. 
 
-Addtionally, we set the publishing history length by using `qRTDConfigure` function as below.The function needs to be executed after opening the Workbook, so the rest of the formulas work properly. 
+Additionally, we set the publishing history length by using `qRTDConfigure` function as below. The function needs to be executed after opening the Workbook, so the rest of the formulas work properly. 
 
 ![qRTDData](../Lesson02/img/qRTDDataHistory.png)
 
@@ -55,7 +55,7 @@ credentials.
 
 ##Subscribing from Excel
 
-The basic query function is `RTD`. It is described  in details 
+The basic query function is `RTD`. It is described in details 
  [here](../../doc/RTD-API-Functions.md.md#RTD). It takes following arguments:
  
   - RTD server implementation  - always "qxlrtd"

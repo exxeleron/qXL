@@ -7,7 +7,7 @@
 
 
 This tutorial only covers a subset of the available interface functions contained in qXL add-in.  Please refer 
-to `qXL` [documentation](../../Worksheet-Examples.md) for for  a full description of all functions.
+to `qXL` [documentation](../../Worksheet-Examples.md) for  a full description of all functions.
 
 ## Goal of the lesson
 
@@ -43,24 +43,24 @@ We suggest to have a seperate Sheet in each Workbook which handles all connectio
 ```
 
 As we see on the screen we have two connections opened:
-- first allows to process process on port 17011, which corresponds to `core.rdb` component on `Exxeleron` system installed locally
-- second allows to process process on port 17050, which corresponds to `access.ap` component on `Exxeleron` system installed locally
+- first allows to process on port 17011, which corresponds to `core.rdb` component on `Exxeleron` system installed locally
+- second allows to process on port 17050, which corresponds to `access.ap` component on `Exxeleron` system installed locally
 
 > Note 
 > 
 The configuration needs to be changed in case of a system different than `Exxeleron`.  
 
-We also added  check cell, which shows whether the connection is open (cell "G2"). The formula inside is simply 
+We also added check cell, which shows whether the connection is open (cell "G2"). The formula inside is simply 
 `=A2=B2`, as properly opened connection returns the alias name.  
 
 <!--------------------------------------------------------------------------------------------------------------------->
 
 ##Querying from Excel 
 
-The basic query function is `qQuery`. It is decribed in more detail 
+The basic query function is `qQuery`. It is described in more detail 
 [here](../../doc/Worksheet-VBA-API-Functions.md#qQuery). 
 
-It takes the connection alias as the first argument and any `q` stament returning `q` object as the second. We use the already opened connection to `core.rdb` so we can query the process without using handles. In this example we use `q-sql` statement as the second argument. 
+It takes the connection alias as the first argument and any `q` statement returning `q` object as the second. We use the already opened connection to `core.rdb` so we can query the process without using handles. In this example we use `q-sql` statement as the second argument. 
 
 > Note
 > In case of the production system it is recommended not to query `core.rdb` directly, but to use the access point component. 
@@ -79,7 +79,7 @@ automatically rescaled to match new query result.
 
 ##Queries with paramaters
 
-Now we will present an example of calling a `qQuery` with multiple argument function being the secon `qQuery paramater. 
+Now we will present an example of calling a `qQuery` with multiple argument function being the second `qQuery paramater. 
 The [.example.ohlcVwap2](https://github.com/exxeleron/enterprise-components/tree/master/tutorial/Lesson04) function
 returns OHLC table based on following parameters:
 
@@ -100,7 +100,7 @@ We insert example values to Excel cells, as can be seen on the screen below usin
 
 For getting results, we again use `qQuery` function. This time we need to provide the list of arguments converted to 
 proper `q` types. We use `qAtom` for converting scalars and `qList` for converting the list. Documentation of all
-convertion functions is available [here](../../Worksheet-VBA-API-Functions.md).
+conversion functions is available [here](../../Worksheet-VBA-API-Functions.md).
 
 `nrSymbol` Named Range formula is defined in the special way. It results in automatic expanding of the Named Range `nrSymbol` any time we add new symbol on the right side of the current range. We do the same for date. 
 
