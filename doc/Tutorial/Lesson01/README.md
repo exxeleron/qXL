@@ -102,7 +102,12 @@ For getting results, we again use `qQuery` function. This time we need to provid
 proper `q` types. We use `qAtom` for converting scalars and `qList` for converting the list. Documentation of all
 conversion functions is available [here](../../Worksheet-VBA-API-Functions.md).
 
-`nrSymbol` Named Range formula is defined in the special way. It results in automatic expanding of the Named Range `nrSymbol` any time we add new symbol on the right side of the current range. We do the same for date. 
+`nrSymbol` Named Range formula is defined in the specific way. It results in automatic expanding of the Named Range `nrSymbol` any time we add new symbol on the right side of the current range. We use the
+same convention for `nrDate`. 
+
+```
+=OFFSET(OHLC!$B$4,0,0,1,COUNTA(OHLC!$4:$4)-1)
+```
 
 ![qRangeFormula](../Lesson01/img/qRangeFormula.png)
 
