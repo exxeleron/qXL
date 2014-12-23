@@ -388,9 +388,10 @@ namespace qXL
             var alias = GetAliasForConnection(sender as QConnection);
             {
                 if (args == null || args.Message.Data == null) return;
-                if (args.Message.Data is Array)
+                var array = args.Message.Data as Array;
+                if (array != null)
                 {
-                    var a = args.Message.Data as Array;
+                    var a = array;
 
                     if (a.Length != 3) return;
                     if (!(a.GetValue(2) is QTable)) return;
@@ -517,7 +518,7 @@ namespace qXL
             var c = GetConnection(alias);
             if (c == null) return ExcelError.ExcelErrorNull;
             var syms = new[] {sym};
-            c.Async(_funcAdd, new object[] {tab, syms});
+            c.Async(_funcAdd, tab, syms);
 
             return ExcelEmpty.Value;
         }
@@ -565,7 +566,7 @@ namespace qXL
             var tables = WildCardMapping[alias].GetTables();
             foreach (var t in tables)
             {
-                c.Async(_funcSub, new object[] {t, ""});
+                c.Async(_funcSub, t, "");
             }
 
             return ExcelEmpty.Value;
@@ -597,7 +598,7 @@ namespace qXL
             foreach (var t in tables)
             {
                 var syms = Mapping[alias].GetSymbols(t);
-                c.Async(_funcSub, new object[] {t, syms});
+                c.Async(_funcSub, t, syms);
             }
 
             return ExcelEmpty.Value;
@@ -622,7 +623,7 @@ namespace qXL
                 return ExcelError.ExcelErrorNull;
             }
 
-            c.Async(_funcSub, new object[] {tableName, ""});
+            c.Async(_funcSub, tableName, "");
 
             return ExcelEmpty.Value;
         }

@@ -616,9 +616,10 @@ namespace qXL
                 {
                     return new QTime((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QTime(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QTime(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var d = Convert.ToDouble(date);
                 return new QTime(Convert.ToInt32(MillisPerDay*(d - (int) d)));
@@ -666,9 +667,10 @@ namespace qXL
                 {
                     return new QDate(AdjToExcelDate((DateTime) date));
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QDate(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QDate(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 if (date is int || date is short)
                 {
@@ -745,9 +747,10 @@ namespace qXL
                 {
                     return new QDateTime(AdjToExcelDate((DateTime) date));
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QDateTime(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QDateTime(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 if (date is int || date is short)
                 {
@@ -777,9 +780,10 @@ namespace qXL
                 {
                     return new QTimestamp(AdjToExcelDate((DateTime) date));
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QTimestamp(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QTimestamp(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var v = Convert.ToDouble(date);
                 var d = (int) v;
@@ -830,9 +834,10 @@ namespace qXL
                 {
                     return new QTimespan((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QTimespan(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QTimespan(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var v = Convert.ToDouble(date);
                 v = MillisPerDay*(v - (int) v);
@@ -881,12 +886,13 @@ namespace qXL
                 {
                     return new QSecond((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QSecond(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QSecond(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var v = Convert.ToDouble(date);
-                return new QSecond(Convert.ToInt32(MillisPerDay/1000*(v - (int) v)));
+                return new QSecond(Convert.ToInt32(86400*(v - (int) v)));
             }
             catch (Exception)
             {
@@ -933,9 +939,10 @@ namespace qXL
                 {
                     return new QMinute((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QMinute(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QMinute(AdjToExcelDate(DateTime.Parse(s)));
                 }
 
                 var tm = DateTime.FromOADate(Convert.ToDouble(date));
@@ -985,8 +992,9 @@ namespace qXL
 
                 if (date is DateTime || date is string)
                 {
-                    var d = date is string
-                        ? DateTime.Parse(date as string)
+                    var s = date as string;
+                    var d = s != null
+                        ? DateTime.Parse(s)
                         : ((DateTime) date).AddDays(-1*((DateTime) date).Day);
                     return new QMonth(AdjToExcelDate(d));
                     //return new QMonth(AdjToExcelDate((DateTime)date));

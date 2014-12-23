@@ -33,7 +33,7 @@ namespace qXL
             ConcurrentDictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, object>>>> _data =
                 new ConcurrentDictionary<string, Dictionary<string, Dictionary<string, Dictionary<string, object>>>>();
 
-        private int _hLen = -1;
+        private int _hLen;
         //artificial delimiter
 
 

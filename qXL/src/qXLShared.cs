@@ -295,7 +295,7 @@ namespace qXL
             if (!(values is Array))
                 values = new[] {values};
 
-            if ((values as Array).Rank != 2 && !(keys is Array))
+            if (((Array) values).Rank != 2 && !(keys is Array))
                 values = new[] {values};
 
             if (!(keys is Array) && keys != null)
@@ -304,7 +304,7 @@ namespace qXL
             var array = keys as Array;
             if (array != null && array.Rank == 2) //thats how it comes from worksheet.
             {
-                var k = keys as Array;
+                var k = (Array) keys;
                 if (k.GetLength(0) == 1 || k.GetLength(1) == 1)
                 {
                     keys = Utils.Com2DArray2Array(k);
@@ -316,7 +316,7 @@ namespace qXL
             if (res[2] != null)
                 return res;
 
-            var dict = new QDictionary(keys as Array, Conversions[res[0].ToString()] as Array);
+            var dict = new QDictionary((Array) keys, Conversions[res[0].ToString()] as Array);
             Conversions[res[0].ToString()] = dict;
             return res;
         }
@@ -337,10 +337,10 @@ namespace qXL
                 keys = null;
             }
 
-            var array1 = columnNames as Array;
+            var array1 = (Array) columnNames;
             if (array1 != null && array1.Rank == 2) //thats how it comes from worksheet.
             {
-                var k = columnNames as Array;
+                var k = (Array) columnNames;
                 if (k.GetLength(0) == 1 || k.GetLength(1) == 1)
                 {
                     columnNames = Utils.Com2DArray2Array(k);
@@ -352,7 +352,7 @@ namespace qXL
                 return res;
             }
 
-            var array2 = columnNames as Array;
+            var array2 = (Array) columnNames;
             var array3 = Conversions[res[0].ToString()] as Array;
             if (array3 != null && (array2 != null && array2.Length != array3.Length))
             {
@@ -366,15 +366,15 @@ namespace qXL
                     keys = new[] {keys};
 
                 if (columnNames == null) return res;
-                var tab = new QKeyedTable((columnNames as Array).OfType<string>().ToArray(),
-                    (keys as Array).OfType<string>().ToArray(), array3);
+                var tab = new QKeyedTable(((Array) columnNames).OfType<string>().ToArray(),
+                    ((Array) keys).OfType<string>().ToArray(), array3);
 
                 Conversions[res[0].ToString()] = tab;
             }
             else
             {
                 if (columnNames == null) return res;
-                var tab = new QTable((columnNames as Array).OfType<string>().ToArray(), array3);
+                var tab = new QTable(((Array) columnNames).OfType<string>().ToArray(), array3);
 
                 Conversions[res[0].ToString()] = tab;
             }

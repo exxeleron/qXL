@@ -601,7 +601,6 @@ namespace qXL
                     //Debug.Print("Resizing FINISH");
 
                     // TODO: Find some dummy macro to clear the undo stack
-
                     if (formulaArrayReturn == XlReturn.XlReturnSuccess)
                     {
                         if (result != null) MemoryCache.Default.Add(key, result, DateTimeOffset.Now.AddSeconds(30));
@@ -672,7 +671,7 @@ namespace qXL
 
                 // Switch to the sheet we want to select
                 var refSheet = (string)Excel(xlSheetNm, refToSelect);
-                Excel(xlcWorkbookSelect, new object[] { refSheet });
+                Excel(xlcWorkbookSelect, refSheet);
 
                 // record selection and active cell on the sheet we want to select
                 _oldSelectionOnRefSheet = Excel(xlfSelection);
@@ -689,7 +688,7 @@ namespace qXL
 
                 // Reset the sheet originally selected
                 var oldActiveSheet = (string)Excel(xlSheetNm, _oldSelectionOnActiveSheet);
-                Excel(xlcWorkbookSelect, new object[] { oldActiveSheet });
+                Excel(xlcWorkbookSelect, oldActiveSheet);
 
                 // Reset the selection in the active sheet (some bugs make this change sometimes too)
                 Excel(xlcSelect, _oldSelectionOnActiveSheet, _oldActiveCellOnActiveSheet);
