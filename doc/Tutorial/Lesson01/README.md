@@ -30,7 +30,7 @@ systems. All parts of code which need amending will be explicitly mentioned.
 ## Opening connection
 
 To open a connection the `qOpen` formula needs to be called. It is described in details
- [here](../../doc/Worksheet-VBA-API-Functions.md#qOpen).
+ [here](../../Worksheet-VBA-API-Functions.md#qopen).
 
 We suggest to have a seperate Sheet in each Workbook which handles all connections (especially if there are multiple
  connections opened). It is more convenient to use Named Ranges for referring to connection details in `qOpen` '
@@ -58,7 +58,7 @@ We also added check cell, which shows whether the connection is open (cell "G2")
 ##Querying from Excel 
 
 The basic query function is `qQuery`. It is described in more detail 
-[here](../../doc/Worksheet-VBA-API-Functions.md#qQuery). 
+[here](../../Worksheet-VBA-API-Functions.md#qquery). 
 
 It takes the connection alias as the first argument and any `q` statement returning `q` object as the second. We use the already opened connection to `core.rdb` so we can query the process without using handles. In this example we use `q-sql` statement as the second argument. 
 
