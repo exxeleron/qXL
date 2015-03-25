@@ -22,7 +22,7 @@ systems. All parts of code which need amending will be explicitly mentioned.
 ## Opening connection
 
 To open a connection the `qRTDOpen` formula needs to be called. It is described in details
- [here](../../doc/RTD-API-Functions.md.md#qRTDOpen).
+ [here](../../RTD-API-Functions.md#qrtdopen).
 
 We suggest to have a separate sheet in each project which handles all connections. It is more convenient to use Named Ranges 
 for referring to connection details in `qRTDOpen` ' function, as can be seen on the screen below. 
@@ -56,7 +56,7 @@ credentials.
 ##Subscribing from Excel
 
 The basic query function is `RTD`. It is described in details 
- [here](../../doc/RTD-API-Functions.md.md#RTD). It takes following arguments:
+ [here](../../RTD-API-Functions.md#rtd). It takes following arguments:
  
   - RTD server implementation  - always "qxlrtd"
   - not used
