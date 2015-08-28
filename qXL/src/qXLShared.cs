@@ -55,7 +55,7 @@ namespace qXL
         {
             try
             {
-                if (String.IsNullOrEmpty(alias))
+                if (string.IsNullOrEmpty(alias))
                 {
                     return "Invalid alias";
                 }
@@ -65,7 +65,7 @@ namespace qXL
                     return alias;
                 }
 
-                if (String.IsNullOrEmpty(hostname))
+                if (string.IsNullOrEmpty(hostname))
                 {
                     return "Invalid hostname";
                 }
@@ -73,7 +73,7 @@ namespace qXL
                 int prt;
                 try
                 {
-                    prt = Int32.Parse(port.ToString());
+                    prt = int.Parse(port.ToString());
                 }
                 catch
                 {
@@ -118,7 +118,7 @@ namespace qXL
             {
                 return "ERR: " + e.Message;
             }
-            return String.Format("Unknown alias '{0}'", alias);
+            return string.Format("Unknown alias '{0}'", alias);
         }
 
         // ReSharper disable InconsistentNaming
@@ -157,7 +157,7 @@ namespace qXL
                 var c = GetConnection(alias);
                 if (c == null)
                 {
-                    return String.Format(@"Alias '{0}' not defined", alias);
+                    return string.Format(@"Alias '{0}' not defined", alias);
                 }
 
                 var result = (parameters.Length > 0)

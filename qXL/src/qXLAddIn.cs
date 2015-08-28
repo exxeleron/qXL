@@ -35,13 +35,12 @@ namespace qXL
     // ReSharper disable UnusedMember.Global
     // ReSharper disable InconsistentNaming
     public class qXLAddIn : IExcelAddIn
-    // ReSharper restore InconsistentNaming
-    // ReSharper restore UnusedMember.Global
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     {
-        // ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
         private static readonly qXLShared _qXL = new qXLShared();
         // ReSharper restore InconsistentNaming
-
         private qXLComAddIn _comAddin;
 
         #region Excel-DNA
@@ -96,7 +95,7 @@ namespace qXL
             [ExcelArgument("Password (optional).")] string password = null,
             // ReSharper disable UnusedParameter.Global
             [ExcelArgument("reEval (optional).")] object reEval = null)
-        // ReSharper restore UnusedParameter.Global
+            // ReSharper restore UnusedParameter.Global
         {
             if (ExcelDnaUtil.IsInFunctionWizard())
             {
@@ -123,7 +122,7 @@ namespace qXL
             Category = "qXL", Name = "qClose")]
         // ReSharper disable UnusedMember.Global
         public static object Close([ExcelArgument("Logical identifier for the connection.")] string alias)
-        // ReSharper restore UnusedMember.Global
+            // ReSharper restore UnusedMember.Global
         {
             if (ExcelDnaUtil.IsInFunctionWizard())
             {
@@ -189,7 +188,8 @@ namespace qXL
                 {
                     var result = _qXL.qQuery(alias, query, p1, p2, p3, p4, p5, p6, p7, p8);
 
-                    if (result == null) return query; //null gets returned only when function definition has been sent to q.
+                    if (result == null)
+                        return query; //null gets returned only when function definition has been sent to q.
                     if (!(result is object[,])) return result;
 
                     r = result as object[,];
@@ -305,9 +305,9 @@ namespace qXL
             Name = "qAtom")]
         // ReSharper disable UnusedMember.Global
         public static object[] QAtom(object value, object type)
-        // ReSharper restore UnusedMember.Global
+            // ReSharper restore UnusedMember.Global
         {
-            return ExcelDnaUtil.IsInFunctionWizard() ? new object[] { ExcelEmpty.Value } : _qXL.qAtom(value, type);
+            return ExcelDnaUtil.IsInFunctionWizard() ? new object[] {ExcelEmpty.Value} : _qXL.qAtom(value, type);
         }
 
         //-------------------------------------------------------------------//
@@ -349,7 +349,7 @@ namespace qXL
             // ReSharper restore UnusedMember.Global
             [ExcelArgument("type specification e.g.: \"sifp\"")] object types)
         {
-            return ExcelDnaUtil.IsInFunctionWizard() ? new object[] { ExcelEmpty.Value } : _qXL.qList(value, types);
+            return ExcelDnaUtil.IsInFunctionWizard() ? new object[] {ExcelEmpty.Value} : _qXL.qList(value, types);
         }
 
         //-------------------------------------------------------------------//
@@ -369,7 +369,7 @@ namespace qXL
             [ExcelArgument("type specification e.g.: \"sift\"")] object types)
         {
             return ExcelDnaUtil.IsInFunctionWizard()
-                ? new object[] { ExcelEmpty.Value }
+                ? new object[] {ExcelEmpty.Value}
                 : _qXL.qDict(keys, values, types);
         }
 
@@ -392,7 +392,7 @@ namespace qXL
             [ExcelArgument("sublist of columns that should be considered as keys")] object keys = null)
         {
             return ExcelDnaUtil.IsInFunctionWizard()
-                ? new object[] { ExcelEmpty.Value }
+                ? new object[] {ExcelEmpty.Value}
                 : _qXL.qTable(columnNames, values, types, keys);
         }
 
@@ -422,7 +422,7 @@ namespace qXL
             Category = "qXL", Name = "qConvert")]
         // ReSharper disable UnusedMember.Local
         private static object QConvert([ExcelArgument("value to be converted")] object value)
-        // ReSharper restore UnusedMember.Local
+            // ReSharper restore UnusedMember.Local
         {
             return ExcelDnaUtil.IsInFunctionWizard() ? ExcelEmpty.Value : _qXL.qConvert(value);
         }
@@ -432,15 +432,14 @@ namespace qXL
         #region ArrayResizer
 
 // ReSharper disable ClassNeverInstantiated.Local
-        private class ArrayResizer : XlCall
+        private class ArrayResizer
 // ReSharper restore ClassNeverInstantiated.Local
         {
-
             // This function will run in the UDF context.
             // Needs extra protection to allow multithreaded use.
             public static object Resize(object[,] array)
             {
-                var caller = Excel(xlfCaller) as ExcelReference;
+                var caller = XlCall.Excel(XlCall.xlfCaller) as ExcelReference;
                 if (caller == null)
                     return array;
 
@@ -474,7 +473,8 @@ namespace qXL
                 {
                     ExcelAsyncUtil.QueueAsMacro(() =>
                     {
-                        var target = new ExcelReference(caller.RowFirst, caller.RowFirst, caller.ColumnFirst + 1, columnLast);
+                        var target = new ExcelReference(caller.RowFirst, caller.RowFirst, caller.ColumnFirst + 1,
+                            columnLast);
                         var firstRow = new object[columns - 1];
                         for (var i = 1; i < columns; i++)
                         {
@@ -505,9 +505,9 @@ namespace qXL
 
             // This function will run in the UDF context.
             // Needs extra protection to allow multithreaded use.
-            public static object ResizeCached(object[,] array, String key)
+            public static object ResizeCached(object[,] array, string key)
             {
-                var caller = Excel(xlfCaller) as ExcelReference;
+                var caller = XlCall.Excel(XlCall.xlfCaller) as ExcelReference;
                 if (caller == null)
                     return array;
 
@@ -549,7 +549,7 @@ namespace qXL
                 return array;
             }
 
-            private static void DoResize(ExcelReference target, String key)
+            private static void DoResize(ExcelReference target, string key)
             {
                 // Get the current state for reset later
                 using (new ExcelEchoOffHelper())
@@ -559,56 +559,58 @@ namespace qXL
                         target.ColumnFirst, target.SheetId);
 
                     // Get the formula in the first cell of the target
-                    var formula = (string)Excel(xlfGetCell, 41, firstCell);
-                    var isFormulaArray = (bool)Excel(xlfGetCell, 49, firstCell);
+                    var formula = (string) XlCall.Excel(XlCall.xlfGetCell, 41, firstCell);
+                    var isFormulaArray = (bool) XlCall.Excel(XlCall.xlfGetCell, 49, firstCell);
                     if (isFormulaArray)
                     {
                         // Select the sheet and firstCell - needed because we want to use SelectSpecial.
                         using (new ExcelSelectionHelper(firstCell))
                         {
                             // Extend the selection to the whole array and clear
-                            Excel(xlcSelectSpecial, 6);
-                            var oldArray = (ExcelReference)Excel(xlfSelection);
+                            XlCall.Excel(XlCall.xlcSelectSpecial, 6);
+                            var oldArray = (ExcelReference) XlCall.Excel(XlCall.xlfSelection);
 
                             oldArray.SetValue(ExcelEmpty.Value);
                         }
                     }
                     // Get the formula and convert to R1C1 mode
-                    var isR1C1Mode = (bool)Excel(xlfGetWorkspace, 4);
+                    var isR1C1Mode = (bool) XlCall.Excel(XlCall.xlfGetWorkspace, 4);
                     var formulaR1C1 = formula;
                     if (!isR1C1Mode)
                     {
                         object formulaR1C1Obj;
-                        var formulaR1C1Return = TryExcel(xlfFormulaConvert, out formulaR1C1Obj, formula, true, false,
+                        var formulaR1C1Return = XlCall.TryExcel(XlCall.xlfFormulaConvert, out formulaR1C1Obj, formula,
+                            true, false,
                             ExcelMissing.Value, firstCell);
-                        if (formulaR1C1Return != XlReturn.XlReturnSuccess || formulaR1C1Obj is ExcelError)
+                        if (formulaR1C1Return != XlCall.XlReturn.XlReturnSuccess || formulaR1C1Obj is ExcelError)
                         {
                             MemoryCache.Default.Remove(key);
-                            var firstCellAddress = (string)Excel(xlfReftext, firstCell, true);
-                            Excel(xlcAlert,
+                            var firstCellAddress = (string) XlCall.Excel(XlCall.xlfReftext, firstCell, true);
+                            XlCall.Excel(XlCall.xlcAlert,
                                 "Cannot resize array formula at " + firstCellAddress +
                                 " - formula might be too long when converted to R1C1 format.");
                             firstCell.SetValue("'" + formula);
                             return;
                         }
-                        formulaR1C1 = (string)formulaR1C1Obj;
+                        formulaR1C1 = (string) formulaR1C1Obj;
                     }
                     // Must be R1C1-style references
                     object ignoredResult;
                     var result = MemoryCache.Default[key] as object[,];
                     //Debug.Print("Resizing START: " + target.RowLast);
-                    var formulaArrayReturn = TryExcel(xlcFormulaArray, out ignoredResult, formulaR1C1, target);
+                    var formulaArrayReturn = XlCall.TryExcel(XlCall.xlcFormulaArray, out ignoredResult, formulaR1C1,
+                        target);
                     //Debug.Print("Resizing FINISH");
 
                     // TODO: Find some dummy macro to clear the undo stack
-                    if (formulaArrayReturn == XlReturn.XlReturnSuccess)
+                    if (formulaArrayReturn == XlCall.XlReturn.XlReturnSuccess)
                     {
                         if (result != null) MemoryCache.Default.Add(key, result, DateTimeOffset.Now.AddSeconds(30));
                         return;
                     }
                     MemoryCache.Default.Remove(key);
-                    var firstCellAddress1 = (string)Excel(xlfReftext, firstCell, true);
-                    Excel(xlcAlert,
+                    var firstCellAddress1 = (string) XlCall.Excel(XlCall.xlfReftext, firstCell, true);
+                    XlCall.Excel(XlCall.xlcAlert,
                         "Cannot resize array formula at " + firstCellAddress1 +
                         " - result might overlap another array.");
                     // Might have failed due to array in the way.
@@ -620,42 +622,42 @@ namespace qXL
         // RIIA-style helpers to deal with Excel selections    
         // Don't use if you agree with Eric Lippert here: http://stackoverflow.com/a/1757344/44264
 
-        private class ExcelCalculationManualHelper : XlCall, IDisposable
+        private class ExcelCalculationManualHelper : IDisposable
         {
             private readonly object _oldCalculationMode;
 
             public ExcelCalculationManualHelper()
             {
-                _oldCalculationMode = Excel(xlfGetDocument, 14);
-                Excel(xlcOptionsCalculation, 3);
+                _oldCalculationMode = XlCall.Excel(XlCall.xlfGetDocument, 14);
+                XlCall.Excel(XlCall.xlcOptionsCalculation, 3);
             }
 
             public void Dispose()
             {
-                Excel(xlcOptionsCalculation, _oldCalculationMode);
+                XlCall.Excel(XlCall.xlcOptionsCalculation, _oldCalculationMode);
             }
         }
 
-        private class ExcelEchoOffHelper : XlCall, IDisposable
+        private class ExcelEchoOffHelper : IDisposable
         {
             private readonly object _oldEcho;
 
             public ExcelEchoOffHelper()
             {
-                _oldEcho = Excel(xlfGetWorkspace, 40);
-                Excel(xlcEcho, false);
+                _oldEcho = XlCall.Excel(XlCall.xlfGetWorkspace, 40);
+                XlCall.Excel(XlCall.xlcEcho, false);
             }
 
             public void Dispose()
             {
-                Excel(xlcEcho, _oldEcho);
+                XlCall.Excel(XlCall.xlcEcho, _oldEcho);
             }
         }
 
         // Select an ExcelReference (perhaps on another sheet) allowing changes to be made there.
         // On clean-up, resets all the selections and the active sheet.
         // Should not be used if the work you are going to do will switch sheets, amke new sheets etc.
-        private class ExcelSelectionHelper : XlCall, IDisposable
+        private class ExcelSelectionHelper : IDisposable
         {
             private readonly object _oldActiveCellOnActiveSheet;
 
@@ -666,32 +668,32 @@ namespace qXL
             public ExcelSelectionHelper(ExcelReference refToSelect)
             {
                 // Remember old selection state on the active sheet
-                _oldSelectionOnActiveSheet = Excel(xlfSelection);
-                _oldActiveCellOnActiveSheet = Excel(xlfActiveCell);
+                _oldSelectionOnActiveSheet = XlCall.Excel(XlCall.xlfSelection);
+                _oldActiveCellOnActiveSheet = XlCall.Excel(XlCall.xlfActiveCell);
 
                 // Switch to the sheet we want to select
-                var refSheet = (string)Excel(xlSheetNm, refToSelect);
-                Excel(xlcWorkbookSelect, refSheet);
+                var refSheet = (string) XlCall.Excel(XlCall.xlSheetNm, refToSelect);
+                XlCall.Excel(XlCall.xlcWorkbookSelect, refSheet);
 
                 // record selection and active cell on the sheet we want to select
-                _oldSelectionOnRefSheet = Excel(xlfSelection);
-                _oldActiveCellOnRefSheet = Excel(xlfActiveCell);
+                _oldSelectionOnRefSheet = XlCall.Excel(XlCall.xlfSelection);
+                _oldActiveCellOnRefSheet = XlCall.Excel(XlCall.xlfActiveCell);
 
                 // make the selection
-                Excel(xlcFormulaGoto, refToSelect);
+                XlCall.Excel(XlCall.xlcFormulaGoto, refToSelect);
             }
 
             public void Dispose()
             {
                 // Reset the selection on the target sheet
-                Excel(xlcSelect, _oldSelectionOnRefSheet, _oldActiveCellOnRefSheet);
+                XlCall.Excel(XlCall.xlcSelect, _oldSelectionOnRefSheet, _oldActiveCellOnRefSheet);
 
                 // Reset the sheet originally selected
-                var oldActiveSheet = (string)Excel(xlSheetNm, _oldSelectionOnActiveSheet);
-                Excel(xlcWorkbookSelect, oldActiveSheet);
+                var oldActiveSheet = (string) XlCall.Excel(XlCall.xlSheetNm, _oldSelectionOnActiveSheet);
+                XlCall.Excel(XlCall.xlcWorkbookSelect, oldActiveSheet);
 
                 // Reset the selection in the active sheet (some bugs make this change sometimes too)
-                Excel(xlcSelect, _oldSelectionOnActiveSheet, _oldActiveCellOnActiveSheet);
+                XlCall.Excel(XlCall.xlcSelect, _oldSelectionOnActiveSheet, _oldActiveCellOnActiveSheet);
             }
         }
 

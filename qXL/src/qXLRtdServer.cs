@@ -82,6 +82,28 @@ namespace qXL
         private static string _funcDel = ".u.del";
         private static string _funcSub = ".u.sub";
 
+        #region Helper
+
+        private static QCallbackConnection GetConnection(string alias)
+        {
+            if (!Connections.ContainsKey(alias)) return null;
+            var c = Connections[alias];
+            if (c == null)
+            {
+                return null;
+            }
+            if (c.IsConnected())
+            {
+                return c;
+            }
+            c.Open();
+            c.DataReceived += OnUpdate; //assign handler function.
+            c.StartListener();
+            return c;
+        }
+
+        #endregion
+
         #region ExcelRtdServer
 
         //-------------------------------------------------------------------//        
@@ -209,7 +231,7 @@ namespace qXL
             else //no subscription id with symbol
             {
                 //get potential symbols
-                ICollection<String> symbolsBeingDisplayed = SymIdMap[alias][tab].Keys;
+                ICollection<string> symbolsBeingDisplayed = SymIdMap[alias][tab].Keys;
                 var notDisplayed = new HashSet<string>(AllSymbols[alias][tab]);
                 foreach (var symbol in symbolsBeingDisplayed)
                 {
@@ -664,7 +686,7 @@ namespace qXL
 
                 try
                 {
-                    port = Int32.Parse(port.ToString());
+                    port = int.Parse(port.ToString());
                 }
                 catch
                 {
@@ -762,14 +784,14 @@ namespace qXL
                     Connections[a].Close();
                     QCallbackConnection con;
                     Connections.TryRemove(a, out con);
-                    return String.Format("Disconnected from '{0}'", a);
+                    return string.Format("Disconnected from '{0}'", a);
                 }
             }
             catch (Exception e)
             {
                 return e.Message;
             }
-            return String.Format("Unknown alias '{0}'", alias);
+            return string.Format("Unknown alias '{0}'", alias);
         }
 
         //-------------------------------------------------------------------//
@@ -811,7 +833,7 @@ namespace qXL
                         return _funcDel;
                     case "data.history.length":
                         int h;
-                        Int32.TryParse(paramValue.ToString(), out h);
+                        int.TryParse(paramValue.ToString(), out h);
                         Cache.ChangeHistoryLength(h);
                         return Cache.GetHistoryLength();
                     default:
@@ -822,28 +844,6 @@ namespace qXL
             {
                 return "Invalid operation";
             }
-        }
-
-        #endregion
-
-        #region Helper
-
-        private static QCallbackConnection GetConnection(string alias)
-        {
-            if (!Connections.ContainsKey(alias)) return null;
-            var c = Connections[alias];
-            if (c == null)
-            {
-                return null;
-            }
-            if (c.IsConnected())
-            {
-                return c;
-            }
-            c.Open();
-            c.DataReceived += OnUpdate; //assign handler function.
-            c.StartListener();
-            return c;
         }
 
         #endregion
