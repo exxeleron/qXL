@@ -1,5 +1,5 @@
 ﻿// 
-// Copyright (c) 2011-2014 Exxeleron GmbH
+// Copyright (c) 2011-2015 Exxeleron GmbH
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -75,7 +75,7 @@ namespace qXL
 
             var rowsLength = 0;
             var columnsLength = 0;
-            Boolean hasNestedArray = false;
+            var hasNestedArray = false;
             for (var i = inArray.GetLowerBound(0); i <= inArray.GetUpperBound(0); i++)
             {
                 var array1 = inArray.GetValue(i) as Array;
@@ -106,10 +106,12 @@ namespace qXL
                 else
                 {
                     rowsLength += 1;
-                }                   
+                }
             }
 
-            var result = hasNestedArray ? new object[rowsLength > 0 ? rowsLength : 1, columnsLength > 0 ? columnsLength : 1] : new object[1, rowsLength];
+            var result = hasNestedArray
+                ? new object[rowsLength > 0 ? rowsLength : 1, columnsLength > 0 ? columnsLength : 1]
+                : new object[1, rowsLength];
             var rowIdx = 0;
             var colIdx = 0;
             for (var i = inArray.GetLowerBound(0); i <= inArray.GetUpperBound(0); i++)
@@ -125,7 +127,6 @@ namespace qXL
                             for (var k = array1.GetLowerBound(0); k <= array1.GetUpperBound(0); k++)
                             {
                                 result[rowIdx, k] = Convert2Excel(array1.GetValue(k));
-
                             }
                             if (array1.GetUpperBound(0) < columnsLength)
                             {
@@ -170,7 +171,7 @@ namespace qXL
             }
 
             return result;
-         }
+        }
 
         //-------------------------------------------------------------------//
         /// <summary>
@@ -616,9 +617,10 @@ namespace qXL
                 {
                     return new QTime((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QTime(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QTime(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var d = Convert.ToDouble(date);
                 return new QTime(Convert.ToInt32(MillisPerDay*(d - (int) d)));
@@ -666,9 +668,10 @@ namespace qXL
                 {
                     return new QDate(AdjToExcelDate((DateTime) date));
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QDate(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QDate(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 if (date is int || date is short)
                 {
@@ -745,9 +748,10 @@ namespace qXL
                 {
                     return new QDateTime(AdjToExcelDate((DateTime) date));
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QDateTime(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QDateTime(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 if (date is int || date is short)
                 {
@@ -777,9 +781,10 @@ namespace qXL
                 {
                     return new QTimestamp(AdjToExcelDate((DateTime) date));
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QTimestamp(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QTimestamp(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var v = Convert.ToDouble(date);
                 var d = (int) v;
@@ -830,9 +835,10 @@ namespace qXL
                 {
                     return new QTimespan((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QTimespan(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QTimespan(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var v = Convert.ToDouble(date);
                 v = MillisPerDay*(v - (int) v);
@@ -881,12 +887,13 @@ namespace qXL
                 {
                     return new QSecond((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QSecond(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QSecond(AdjToExcelDate(DateTime.Parse(s)));
                 }
                 var v = Convert.ToDouble(date);
-                return new QSecond(Convert.ToInt32(MillisPerDay/1000*(v - (int) v)));
+                return new QSecond(Convert.ToInt32(86400*(v - (int) v)));
             }
             catch (Exception)
             {
@@ -933,9 +940,10 @@ namespace qXL
                 {
                     return new QMinute((DateTime) date);
                 }
-                if (date is string)
+                var s = date as string;
+                if (s != null)
                 {
-                    return new QMinute(AdjToExcelDate(DateTime.Parse(date as string)));
+                    return new QMinute(AdjToExcelDate(DateTime.Parse(s)));
                 }
 
                 var tm = DateTime.FromOADate(Convert.ToDouble(date));
@@ -985,8 +993,9 @@ namespace qXL
 
                 if (date is DateTime || date is string)
                 {
-                    var d = date is string
-                        ? DateTime.Parse(date as string)
+                    var s = date as string;
+                    var d = s != null
+                        ? DateTime.Parse(s)
                         : ((DateTime) date).AddDays(-1*((DateTime) date).Day);
                     return new QMonth(AdjToExcelDate(d));
                     //return new QMonth(AdjToExcelDate((DateTime)date));
@@ -1100,20 +1109,20 @@ namespace qXL
             switch (type)
             {
                 case "int16":
-                    return (((short)result) == (short)QTypes.GetQNull(QType.Short)) ? "" : result;
+                    return (((short) result) == (short) QTypes.GetQNull(QType.Short)) ? "" : result;
                 case "int32":
-                    return (((int)result) == (int)QTypes.GetQNull(QType.Int)) ? "" : result;
+                    return (((int) result) == (int) QTypes.GetQNull(QType.Int)) ? "" : result;
                 case "int64":
                 case "long":
                     if ((((long) result) == (long) QTypes.GetQNull(QType.Long)))
                     {
                         return "";
                     }
-                    return Environment.Is64BitProcess ? result : Convert.ToDouble(result);                 
+                    return Environment.Is64BitProcess ? result : Convert.ToDouble(result);
                 case "double":
-                    return Double.IsNaN((double)result) ? "" : result;
+                    return double.IsNaN((double) result) ? "" : result;
                 case "single":
-                    return Single.IsNaN(((float)result)) ? "" : result;
+                    return float.IsNaN(((float) result)) ? "" : result;
                 case "boolean":
                 case "byte":
                     return result;
@@ -1229,9 +1238,11 @@ namespace qXL
                     var k = Convert2Excel(kv.Key);
                     if (k is Array)
                     {
-                        k = (from object x in ((Array) k) where x != null select x).Aggregate("", (current, x) => current + (" " + x)).Trim();
+                        k =
+                            (from object x in ((Array) k) where x != null select x).Aggregate("",
+                                (current, x) => current + (" " + x)).Trim();
                     }
-                    res[0, keyCounter] = k;//kv.Key.ToString();
+                    res[0, keyCounter] = k; //kv.Key.ToString();
                     var array = kv.Value as Array;
                     var type = kv.Value.GetType().Name.ToLower();
                     if (array != null && !type.Equals("char[]"))

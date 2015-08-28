@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <?define ProductName = "exxeleron qXL" ?>
 <?define ShortName = "qXL" ?>
 <?define ProductVersion = "$(var.VersionMajor).$(var.VersionMinor).$(var.VersionRevision).$(var.VersionBuild)"?>
@@ -18,17 +18,17 @@
              InstallScope="perUser"
              Manufacturer="exxeleron GmbH"
              Description="$(var.ProductName)$(var.VersionType) $(var.ProductVersionShort) installer"
-             Comments="© 2014 exxeleron GmbH"/>
+             Comments="© 2014 exxeleron GmbH" />
     <MediaTemplate EmbedCab="yes" />
-    
+
     <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
     <Upgrade Id="$(var.ProductUpgradeCode)">
       <UpgradeVersion
-         Minimum="1.0.0.0" Maximum="99.0.0.0"
-         Property="PREVIOUSVERSIONSINSTALLED"
-         IncludeMinimum="yes" IncludeMaximum="no" />
+        Minimum="1.0.0.0" Maximum="99.0.0.0"
+        Property="PREVIOUSVERSIONSINSTALLED"
+        IncludeMinimum="yes" IncludeMaximum="no" />
     </Upgrade>
-    
+
     <WixVariable Id="WixUIBannerBmp" Value="Resources\Banner.jpg" />
     <WixVariable Id="WixUIDialogBmp" Value="Resources\Dialog.jpg" />
     <WixVariable Id="WixUILicenseRtf" Value="Resources\LICENSE.rtf" />
@@ -37,16 +37,16 @@
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="AppDataFolder">
         <Directory Id="Microsoft" Name="Microsoft">
-          <Directory Id="AddInsDir" Name="AddIns"/>
+          <Directory Id="AddInsDir" Name="AddIns" />
         </Directory>
       </Directory>
 
       <Directory Id="PersonalFolder">
-        <Directory Id="INSTALLDIR" Name="$(var.ProductName) Examples"/>
+        <Directory Id="INSTALLDIR" Name="$(var.ProductName) Examples" />
       </Directory>
 
       <Directory Id="ProgramMenuFolder" Name="Programs">
-        <Directory Id="ExamplesProgramsFolder" Name="$(var.ProductName) Examples"/>
+        <Directory Id="ExamplesProgramsFolder" Name="$(var.ProductName) Examples" />
       </Directory>
     </Directory>
 
@@ -56,23 +56,26 @@
     -->
     <ComponentGroup Id="XLLDistributables">
       <Component Id="XLL32" Guid="{9921255F-1E52-4509-AFBA-F3841D3E6D3E}" Directory="AddInsDir">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="Xll32Bit" Value="1" KeyPath="yes" Type="integer" />
-        <File Id="QXL.XLL" Name="qXL.xll" Source="$(var.SolutionDir)qXL\bin\Release\qXL.xll" >
-          <netfx:NativeImage Id="ngen_32Xll" Platform="32bit" Priority="0"/>
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="Xll32Bit" Value="1"
+                       KeyPath="yes" Type="integer" />
+        <File Id="QXL.XLL" Name="qXL.xll" Source="$(var.SolutionDir)qXL\bin\Release\qXL.xll">
+          <netfx:NativeImage Id="ngen_32Xll" Platform="32bit" Priority="0" />
         </File>
         <RemoveFile On="uninstall" Id="XLL32" Directory="AddInsDir" Name="qXL.xll" />
       </Component>
 
       <Component Id="XLL64" Guid="{8F571C13-4BEC-4061-A070-AB4FC87546A2}" Directory="AddInsDir">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="Xll64Bit" Value="1" KeyPath="yes" Type="integer" />
-        <File Id="QXL64.XLL" Name="qXL64.xll" Source="$(var.SolutionDir)qXL\bin\Release\qXL64.xll" >
-          <netfx:NativeImage Id="ngen_64Xll" Platform="64bit" Priority="0"/>
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="Xll64Bit" Value="1"
+                       KeyPath="yes" Type="integer" />
+        <File Id="QXL64.XLL" Name="qXL64.xll" Source="$(var.SolutionDir)qXL\bin\Release\qXL64.xll">
+          <netfx:NativeImage Id="ngen_64Xll" Platform="64bit" Priority="0" />
         </File>
         <RemoveFile On="uninstall" Id="XLL64" Directory="AddInsDir" Name="qXL64.xll" />
       </Component>
 
       <Component Id="AddInsDir" Guid="{E2FEDD7E-AD3C-44AE-9B1A-E5174B999806}" Directory="AddInsDir">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="AddIns" Value="1" KeyPath="yes" Type="integer" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="AddIns" Value="1" KeyPath="yes"
+                       Type="integer" />
         <RemoveFolder Id="AddInsDir" Directory="AddInsDir" On="uninstall" />
         <RemoveFolder Id="Microsoft" Directory="Microsoft" On="uninstall" />
       </Component>
@@ -80,46 +83,56 @@
 
     <ComponentGroup Id="qXLExamples">
       <Component Id="WorksheetExamplesXLSX" Guid="{D706B528-5C56-48D4-8422-03FCB775BFC0}" Directory="INSTALLDIR">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="WorksheetExamplesXLSX" Value="1" KeyPath="yes" Type="integer" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="WorksheetExamplesXLSX"
+                       Value="1" KeyPath="yes" Type="integer" />
         <File Source="$(var.SolutionDir)doc\examples\Worksheet-Examples.xlsx">
-          <Shortcut Id="WorksheetExamplesXLSXShortcut" Directory="ExamplesProgramsFolder" Name="Worksheet Examples" WorkingDirectory="INSTALLDIR"/>
+          <Shortcut Id="WorksheetExamplesXLSXShortcut" Directory="ExamplesProgramsFolder" Name="Worksheet Examples"
+                    WorkingDirectory="INSTALLDIR" />
         </File>
         <RemoveFile On="uninstall" Id="WorksheetExamplesXLSX" Directory="INSTALLDIR" Name="WorksheetExamples.xlsx" />
       </Component>
 
       <Component Id="RTDExamplesXLSM" Guid="{728AEC7B-481C-4EE4-98F1-DA04402DF4FA}" Directory="INSTALLDIR">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="RTDExamplesXLSM" Value="1" KeyPath="yes" Type="integer" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="RTDExamplesXLSM" Value="1"
+                       KeyPath="yes" Type="integer" />
         <File Source="$(var.SolutionDir)doc\examples\RTD-Examples.xlsm">
-          <Shortcut Id="RTDExamplesXLSMShortcut" Directory="ExamplesProgramsFolder" Name="RTD Example" WorkingDirectory="INSTALLDIR"/>
+          <Shortcut Id="RTDExamplesXLSMShortcut" Directory="ExamplesProgramsFolder" Name="RTD Example"
+                    WorkingDirectory="INSTALLDIR" />
         </File>
         <RemoveFile On="uninstall" Id="RTDExamplesXLSM" Directory="INSTALLDIR" Name="RTD-Examples.xlsm" />
       </Component>
 
       <Component Id="VBAExamplesXLSM" Guid="{941FC9F4-8FED-47B1-9A87-744130687429}" Directory="INSTALLDIR">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="VBAExamplesXLSM" Value="1" KeyPath="yes" Type="integer" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="VBAExamplesXLSM" Value="1"
+                       KeyPath="yes" Type="integer" />
         <File Source="$(var.SolutionDir)doc\examples\VBA-Examples.xlsm">
-          <Shortcut Id="VBAExamplesXLSMShortcut" Directory="ExamplesProgramsFolder" Name="VBA Examples" WorkingDirectory="INSTALLDIR"/>
+          <Shortcut Id="VBAExamplesXLSMShortcut" Directory="ExamplesProgramsFolder" Name="VBA Examples"
+                    WorkingDirectory="INSTALLDIR" />
         </File>
         <RemoveFile On="uninstall" Id="VBAExamplesXLSM" Directory="INSTALLDIR" Name="VBA-Examples.xlsm" />
       </Component>
 
       <Component Id="ExamplesDir" Guid="{B08E66E4-7B6B-4653-8208-664FD4208B21}" Directory="INSTALLDIR">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="ExamplesDir" Value="1" KeyPath="yes" Type="integer" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="ExamplesDir" Value="1"
+                       KeyPath="yes" Type="integer" />
         <RemoveFolder On="uninstall" Id="INSTALLDIR" Directory="INSTALLDIR" />
       </Component>
 
       <Component Id="ExamplesShortcutsDir" Guid="*" Directory="ExamplesProgramsFolder">
-        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="ExamplesShortcutsDir" Value="1" KeyPath="yes" Type="integer" />
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\$(var.ShortName)" Name="ExamplesShortcutsDir" Value="1"
+                       KeyPath="yes" Type="integer" />
         <RemoveFolder On="uninstall" Id="ExamplesProgramsFolder" Directory="ExamplesProgramsFolder" />
       </Component>
     </ComponentGroup>
 
-    <Feature Id="ExcelAddIn" Title="qXL Excel AddIn" Description="Excel and kdb+ integration" Level="1" AllowAdvertise="yes" Absent="disallow">
-      <ComponentGroupRef Id="XLLDistributables"/>
+    <Feature Id="ExcelAddIn" Title="qXL Excel AddIn" Description="Excel and kdb+ integration" Level="1"
+             AllowAdvertise="yes" Absent="disallow">
+      <ComponentGroupRef Id="XLLDistributables" />
     </Feature>
 
-    <Feature Id="Examples" Title="qXL Examples" Description="Samples demonstrating Excel integration with kdb+" Level="1" AllowAdvertise="yes" ConfigurableDirectory='INSTALLDIR'>
-      <ComponentGroupRef Id="qXLExamples"/>
+    <Feature Id="Examples" Title="qXL Examples" Description="Samples demonstrating Excel integration with kdb+"
+             Level="1" AllowAdvertise="yes" ConfigurableDirectory='INSTALLDIR'>
+      <ComponentGroupRef Id="qXLExamples" />
     </Feature>
 
     <PropertyRef Id="NETFRAMEWORK40CLIENT" />
@@ -159,7 +172,7 @@
 
       <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="CustomizeDlg" Order="1">NOT Installed</Publish>
       <Publish Dialog="VerifyReadyDlg" Control="Back" Event="NewDialog" Value="MaintenanceTypeDlg" Order="1">Installed</Publish>
-      
+
       <Publish Dialog="MaintenanceWelcomeDlg" Control="Next" Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
       <Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
       <Publish Dialog="MaintenanceTypeDlg" Control="ChangeButton" Event="NewDialog" Value="CustomizeDlg">1</Publish>
@@ -169,7 +182,7 @@
 
     <UIRef Id="WixUI_Common" />
 
-    <Icon Id="Icon.ico" SourceFile="Resources\Icon.ico"/>
+    <Icon Id="Icon.ico" SourceFile="Resources\Icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="Icon.ico"></Property>
 
     <!--IMPORTANT ALL MS OFFICE SUPPORTED VERSIONS ARE HERE: Office 2003, 2007, 2010, 2013 Keep it uptodate-->
@@ -193,11 +206,15 @@
     http://www.codeproject.com/Articles/132918/Creating-Custom-Action-for-WIX-Written-in-Managed?fid=1599130&df=90&mpp=25&noise=3&prof=False&sort=Position&view=Quick&spc=Relaxed&select=4131367&fr=1#xx0xx
     -->
     <Binary Id="InstallerCA.CA.dll" SourceFile="..\InstallerCA\bin\Release\InstallerCA.CA.dll" />
-    <CustomAction Id="Action_RegisterAddIn.SetProperty" Return="check" Property="Action_RegisterAddIn" Value="OFFICEREGKEYS=[OFFICEREGKEYS];XLL32=[XLL32];XLL64=[XLL64]" />
-    <CustomAction Id="Action_RegisterAddIn" BinaryKey="InstallerCA.CA.dll" DllEntry="CaRegisterAddIn" Return="check" Execute="immediate">
+    <CustomAction Id="Action_RegisterAddIn.SetProperty" Return="check" Property="Action_RegisterAddIn"
+                  Value="OFFICEREGKEYS=[OFFICEREGKEYS];XLL32=[XLL32];XLL64=[XLL64]" />
+    <CustomAction Id="Action_RegisterAddIn" BinaryKey="InstallerCA.CA.dll" DllEntry="CaRegisterAddIn" Return="check"
+                  Execute="immediate">
     </CustomAction>
-    <CustomAction Id="Action_UnRegisterAddIn.SetProperty" Return="check" Property="Action_UnRegisterAddIn" Value="OFFICEREGKEYS=[OFFICEREGKEYS];XLL32=[XLL32];XLL64=[XLL64]" />
-    <CustomAction Id="Action_UnRegisterAddIn" BinaryKey="InstallerCA.CA.dll" DllEntry="CaUnRegisterAddIn" Return="check" Execute="immediate" />
+    <CustomAction Id="Action_UnRegisterAddIn.SetProperty" Return="check" Property="Action_UnRegisterAddIn"
+                  Value="OFFICEREGKEYS=[OFFICEREGKEYS];XLL32=[XLL32];XLL64=[XLL64]" />
+    <CustomAction Id="Action_UnRegisterAddIn" BinaryKey="InstallerCA.CA.dll" DllEntry="CaUnRegisterAddIn"
+                  Return="check" Execute="immediate" />
     <CustomAction Id="Action_CloseAppsPrompt" BinaryKey="InstallerCA.CA.dll" DllEntry="ClosePrompt" Return="check" />
     <InstallExecuteSequence>
       <Custom Action="Action_CloseAppsPrompt" After="Action_RegisterAddIn.SetProperty" />
