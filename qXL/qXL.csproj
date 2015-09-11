@@ -49,12 +49,13 @@
     <VersionType>-$(VERSION_TYPE)</VersionType>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExcelDna.Integration, Version=0.33.5692.38628, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Integration.0.33.7-rc1\lib\ExcelDna.Integration.dll</HintPath>
+    <Reference Include="ExcelDna.Integration, Version=0.33.5730.40390, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDna.Integration.0.33.9\lib\ExcelDna.Integration.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="qSharp">
-      <HintPath>..\lib\qSharp.dll</HintPath>
+    <Reference Include="qSharp, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\qSharp.2.2.0.0\lib\net40\qSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -116,18 +117,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="qXL-AddIn.dna">
+    <Content Include="qXL-AddIn.dna">
       <SubType>Designer</SubType>
-    </None>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)qXL-AddIn.dna" "$(TargetDir)" /B /Y
 copy "$(ProjectDir)qXL-AddIn.dna" "$(TargetDir)qXL-AddIn64.dna" /B /Y
-copy "$(SolutionDir)\packages\ExcelDna.AddIn.0.33.7-rc1\tools\ExcelDna.xll" "$(TargetDir)qXL-AddIn.xll" /B /Y
-copy "$(SolutionDir)\packages\ExcelDna.AddIn.0.33.7-rc1\tools\ExcelDna64.xll" "$(TargetDir)qXL-AddIn64.xll" /B /Y
-"$(SolutionDir)packages\ExcelDna.AddIn.0.33.7-rc1\tools\ExcelDnaPack.exe" "$(TargetDir)qXL-AddIn.dna" /Y /O "$(TargetDir)qXL.xll" 
-"$(SolutionDir)packages\ExcelDna.AddIn.0.33.7-rc1\tools\ExcelDnaPack.exe" "$(TargetDir)qXL-AddIn64.dna" /Y /O "$(TargetDir)qXL64.xll"</PostBuildEvent>
+copy "$(SolutionDir)\packages\ExcelDna.AddIn.0.33.9\tools\ExcelDna.xll" "$(TargetDir)qXL-AddIn.xll" /B /Y
+copy "$(SolutionDir)\packages\ExcelDna.AddIn.0.33.9\tools\ExcelDna64.xll" "$(TargetDir)qXL-AddIn64.xll" /B /Y
+"$(SolutionDir)packages\ExcelDna.AddIn.0.33.9\tools\ExcelDnaPack.exe" "$(TargetDir)qXL-AddIn.dna" /Y /O "$(TargetDir)qXL.xll" 
+"$(SolutionDir)packages\ExcelDna.AddIn.0.33.9\tools\ExcelDnaPack.exe" "$(TargetDir)qXL-AddIn64.dna" /Y /O "$(TargetDir)qXL64.xll"
+</PostBuildEvent>
   </PropertyGroup>
   <!-- Import the msbuildtasks -->
   <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" Condition="Exists('$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets')" />

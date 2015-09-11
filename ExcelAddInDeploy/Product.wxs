@@ -14,11 +14,10 @@
            UpgradeCode="$(var.ProductUpgradeCode)">
     <Package InstallerVersion="200"
              Compressed="yes"
-             InstallPrivileges="elevated"
              InstallScope="perUser"
              Manufacturer="exxeleron GmbH"
              Description="$(var.ProductName)$(var.VersionType) $(var.ProductVersionShort) installer"
-             Comments="© 2014 exxeleron GmbH" />
+             Comments="© 2014-2015 exxeleron GmbH" />
     <MediaTemplate EmbedCab="yes" />
 
     <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes" />
